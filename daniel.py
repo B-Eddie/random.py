@@ -88,6 +88,8 @@ def drawScreen():
 myClock = time.Clock()
 
 running = True
+# Define the restricted area
+restricted_area = Rect(145, 0, 495 - 145, 95 - 0)
 
 while running:
     for evnt in event.get():
@@ -117,54 +119,49 @@ while running:
             if evnt.key == K_DOWN:
                 KEY_DOWN = False
 
-    #Updating player collision
+    # Updating player collision
     player_collision = Rect(player_x, player_y, 64, 64)
 
+    # Predict and restrict movement based on the restricted area
     if KEY_LEFT:
-        #Outdoor
-        if backgrounds == outdoor:
-            if player_collision.colliderect(house_rect):  # Only move if no collision
-                player_x -= 0
-            else:
-                player = player_sprites[1]
-                player_x -= player_speed
-            if player_x <= -10:
-                player_x = -10
-        #Hallway
-        elif backgrounds == hallway:
-            if player_x >= 230:
+        # Predict the next position
+        predicted_collision = player_collision.move(-player_speed, 0)
+        if not predicted_collision.colliderect(restricted_area):
+            if backgrounds == outdoor:
+                if not player_collision.colliderect(house_rect):
+                    player = player_sprites[1]
+                    player_x -= player_speed
+                if player_x <= -10:
+                    player_x = -10
+            elif backgrounds == hallway and player_x >= 230:
                 player = player_sprites[1]
                 player_x -= player_speed
 
     if KEY_RIGHT:
-        # Outdoor
-        if backgrounds == outdoor:
-            if not player_collision.colliderect(house_rect):
-                player = player_sprites[2]
-                player_x += player_speed
-            if player_x >= 745:
-                player_x = 745
-
-        # Hallway
-        elif backgrounds == hallway:
-            if player_x < 500:
+        predicted_collision = player_collision.move(player_speed, 0)
+        if not predicted_collision.colliderect(restricted_area):
+            if backgrounds == outdoor:
+                if not player_collision.colliderect(house_rect):
+                    player = player_sprites[2]
+                    player_x += player_speed
+                if player_x >= 745:
+                    player_x = 745
+            elif backgrounds == hallway and player_x < 500:
                 player = player_sprites[2]
                 player_x += player_speed
 
     if KEY_UP:
-        if not player_collision.colliderect(house_rect):
+        predicted_collision = player_collision.move(0, -player_speed)
+        if not predicted_collision.colliderect(restricted_area):
             player = player_sprites[3]
             player_y -= player_speed
 
-
-
     if KEY_DOWN:
-        if player_y >= 430:
-            player = player_sprites[0]
-            player_y += 0
-        else:
-            player = player_sprites[0]
-            player_y += player_speed
+        predicted_collision = player_collision.move(0, player_speed)
+        if not predicted_collision.colliderect(restricted_area):
+            if player_y < 430:
+                player = player_sprites[0]
+                player_y += player_speed
 
     drawScreen()
     display.flip()
