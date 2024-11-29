@@ -61,8 +61,11 @@ my_text = my_font.render("Press E to interact", True, WHITE)
 
 #Object hit boxes
 house_door = Rect(320, 100, 120, 20)
+house_door_H = Rect(320, 440, 120, 20)
 house_rect = Rect(145, 0, 495, 95)
 living_room_door = Rect(230, 290, 10, 100)
+tree1 = Rect(110, 175, 80, 80)
+tree2 = Rect(568, 155, 60, 78)
 
 # Player hit box
 player_collision = Rect(player_x, player_y, 64, 64)
@@ -72,9 +75,7 @@ def drawScreen():
     screen.blit(backgrounds, (0, 0))
     if backgrounds == outdoor:
         screen.blit(start_text, (130, 470))
-    screen.blit(player, (player_x, player_y))
-
-    if backgrounds == outdoor:
+        screen.blit(player, (player_x, player_y))
         if player_collision.colliderect(house_door):
             screen.blit(my_text, (340, 100))
 
@@ -82,6 +83,8 @@ def drawScreen():
         screen.blit(player, (player_x, player_y))
         if player_collision.colliderect(living_room_door):
             screen.blit(my_text, (185, 300))
+        elif player_collision.colliderect(house_door_H):
+            screen.blit(my_text, (336, 480))
 
     display.flip()
 
@@ -110,6 +113,10 @@ while running:
                     backgrounds = hallway
                 elif backgrounds == hallway and player_collision.colliderect(living_room_door):
                     print("Living Room")
+                elif backgrounds == hallway and player_collision.colliderect(house_door_H):
+                    player_x = 360
+                    player_y = 120
+                    backgrounds = outdoor
 
         if evnt.type == KEYUP:
             if evnt.key == K_LEFT:
@@ -125,24 +132,22 @@ while running:
     player_collision = Rect(player_x, player_y, 64, 64)
 
     if KEY_LEFT:
-        # Predict the next position
         predicted_collision = player_collision.move(-player_speed * 1.5, 0)
         if backgrounds == outdoor:
-            if not predicted_collision.colliderect(house_rect):
-                if not player_collision.colliderect(house_rect) and player_x >= -10:
+            if not predicted_collision.colliderect(house_rect) and not predicted_collision.colliderect(tree1) and not predicted_collision.colliderect(tree2) and player_x >= -10:
                     player = player_sprites[1]
                     player_x -= player_speed
-        if backgrounds == hallway and player_x >= 230:
+        elif backgrounds == hallway and player_x >= 230:
             player = player_sprites[1]
             player_x -= player_speed
 
     if KEY_RIGHT:
         predicted_collision = player_collision.move(player_speed, 0)
         if backgrounds == outdoor:
-                if not predicted_collision.colliderect(house_rect) and player_x <= 745:
-                    player = player_sprites[2]
-                    player_x += player_speed
-        if backgrounds == hallway and player_x <= 500:
+            if not predicted_collision.colliderect(house_rect) and not predicted_collision.colliderect(tree1) and not predicted_collision.colliderect(tree2) and player_x <= 745:
+                player = player_sprites[2]
+                player_x += player_speed
+        elif backgrounds == hallway and player_x <= 500:
             player = player_sprites[2]
             player_x += player_speed
 
@@ -150,19 +155,20 @@ while running:
     if KEY_UP:
         predicted_collision = player_collision.move(0, -player_speed * 1.7)
         if backgrounds == outdoor:
-            if not predicted_collision.colliderect(house_rect) and player_y >= 0:
+            if not predicted_collision.colliderect(house_rect) and not predicted_collision.colliderect(tree1) and not predicted_collision.colliderect(tree2) and player_y >= 0:
                 player = player_sprites[3]
                 player_y -= player_speed
-        if backgrounds == hallway:
+        elif backgrounds == hallway and player_y >= 0:
             player = player_sprites[3]
             player_y -= player_speed
 
     if KEY_DOWN:
         predicted_collision = player_collision.move(0, player_speed)
-        if not predicted_collision.colliderect(house_rect) and player_y < 430:
-            player = player_sprites[0]
-            player_y += player_speed
-        if backgrounds == hallway:
+        if backgrounds == outdoor:
+            if not predicted_collision.colliderect(house_rect) and not predicted_collision.colliderect(tree1) and not predicted_collision.colliderect(tree2) and player_y <= 430:
+               player = player_sprites[0]
+               player_y += player_speed
+        elif backgrounds == hallway and player_y <= 432:
             player = player_sprites[0]
             player_y += player_speed
 
