@@ -141,14 +141,20 @@ while running:
         predicted_collision = player_collision.move(player_speed, 0)
         if not predicted_collision.colliderect(restricted_area):
             if backgrounds == outdoor:
-                if not player_collision.colliderect(house_rect):
+                # Correct the logic for detecting right-side collisions
+                if not house_rect.colliderect(predicted_collision):
                     player = player_sprites[2]
                     player_x += player_speed
-                if player_x >= 745:
-                    player_x = 745
-            elif backgrounds == hallway and player_x < 500:
-                player = player_sprites[2]
-                player_x += player_speed
+                else:
+                    # Prevent movement into the right side of the house
+                    if player_collision.right < house_rect.right:
+                        player_x = house_rect.left - player_collision.width
+            if player_x >= 745:
+                player_x = 745
+        elif backgrounds == hallway and player_x < 500:
+            player = player_sprites[2]
+            player_x += player_speed
+
 
     if KEY_UP:
         predicted_collision = player_collision.move(0, -player_speed)
