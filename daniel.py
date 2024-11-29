@@ -132,9 +132,9 @@ while running:
                 if not player_collision.colliderect(house_rect) and player_x >= -10:
                     player = player_sprites[1]
                     player_x -= player_speed
-            elif backgrounds == hallway and player_x >= 230:
-                player = player_sprites[1]
-                player_x -= player_speed
+        if backgrounds == hallway and player_x >= 230:
+            player = player_sprites[1]
+            player_x -= player_speed
 
     if KEY_RIGHT:
         predicted_collision = player_collision.move(player_speed, 0)
@@ -153,10 +153,16 @@ while running:
             if not predicted_collision.colliderect(house_rect) and player_y >= 0:
                 player = player_sprites[3]
                 player_y -= player_speed
+        if backgrounds == hallway:
+            player = player_sprites[3]
+            player_y -= player_speed
 
     if KEY_DOWN:
         predicted_collision = player_collision.move(0, player_speed)
         if not predicted_collision.colliderect(house_rect) and player_y < 430:
+            player = player_sprites[0]
+            player_y += player_speed
+        if backgrounds == hallway:
             player = player_sprites[0]
             player_y += player_speed
 
