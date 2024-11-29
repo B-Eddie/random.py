@@ -18,10 +18,10 @@ KEY_UP = False
 KEY_DOWN = False
 
 #Character sprites
-char_forward = image.load("image (1).png")
-char_left = image.load("image (3) (1) (1).png")
-char_right = image.load("image (3) (1) (1) (1).png")
-char_back = image.load("image (1) (1).png")
+char_forward = image.load("C:\\Users\\2linm\\PycharmProjects\\PythonProject\\pygame files\\image (1) (1)\\image (1).png")
+char_left = image.load("C:\\Users\\2linm\\PycharmProjects\\PythonProject\\pygame files\\image (1) (1)\\image (3) (1) (1).png")
+char_right = image.load("C:\\Users\\2linm\\PycharmProjects\\PythonProject\\pygame files\\image (1) (1)\\image (3) (1) (1) (1).png")
+char_back = image.load("C:\\Users\\2linm\\PycharmProjects\\PythonProject\\pygame files\\image (1) (1)\\image (1) (1).png")
 
 #Doubling character size
 char_forward = transform.scale(char_forward, (char_forward.get_width() * 2, char_forward.get_height() * 2))
@@ -30,8 +30,8 @@ char_right = transform.scale(char_right, (char_right.get_width() * 2, char_right
 char_back = transform.scale(char_back, (char_back.get_width() * 2, char_back.get_height() * 2))
 
 #Backgrounds
-outdoor = image.load("Outdoor.png")
-hallway = image.load("New Piskel.png")
+outdoor = image.load("C:\\Users\\2linm\\PycharmProjects\\PythonProject\\pygame files\\image (1) (1)\\Outdoor.png")
+hallway = image.load("C:\\Users\\2linm\\PycharmProjects\\PythonProject\\pygame files\\image (1) (1)\\New Piskel.png")
 
 #Character Sprites
 player_sprites = [char_forward, char_left, char_right, char_back]
@@ -79,17 +79,15 @@ def drawScreen():
             screen.blit(my_text, (340, 100))
 
     if backgrounds == hallway:
+        screen.blit(player, (player_x, player_y))
         if player_collision.colliderect(living_room_door):
             screen.blit(my_text, (185, 300))
 
-    draw.rect(screen, (255, 0, 0), house_rect)
     display.flip()
 
 myClock = time.Clock()
 
 running = True
-# Define the restricted area
-restricted_area = Rect(145, 0, 495 - 145, 95 - 0)
 
 while running:
     for evnt in event.get():
@@ -106,7 +104,11 @@ while running:
             if evnt.key == K_DOWN:
                 KEY_DOWN = True
             if evnt.key == K_e:
-                if player_collision.colliderect(living_room_door):
+                if backgrounds == outdoor and player_collision.colliderect(house_door):
+                    player_x = 360
+                    player_y = 430
+                    backgrounds = hallway
+                elif backgrounds == hallway and player_collision.colliderect(living_room_door):
                     print("Living Room")
 
         if evnt.type == KEYUP:
@@ -122,52 +124,41 @@ while running:
     # Updating player collision
     player_collision = Rect(player_x, player_y, 64, 64)
 
-    # Predict and restrict movement based on the restricted area
     if KEY_LEFT:
         # Predict the next position
-        predicted_collision = player_collision.move(-player_speed, 0)
-        if not predicted_collision.colliderect(restricted_area):
-            if backgrounds == outdoor:
-                if not player_collision.colliderect(house_rect):
+        predicted_collision = player_collision.move(-player_speed * 1.5, 0)
+        if backgrounds == outdoor:
+            if not predicted_collision.colliderect(house_rect):
+                if not player_collision.colliderect(house_rect) and player_x >= -10:
                     player = player_sprites[1]
                     player_x -= player_speed
-                if player_x <= -10:
-                    player_x = -10
             elif backgrounds == hallway and player_x >= 230:
                 player = player_sprites[1]
                 player_x -= player_speed
 
     if KEY_RIGHT:
         predicted_collision = player_collision.move(player_speed, 0)
-        if not predicted_collision.colliderect(restricted_area):
-            if backgrounds == outdoor:
-                # Correct the logic for detecting right-side collisions
-                if not house_rect.colliderect(predicted_collision):
+        if backgrounds == outdoor:
+                if not predicted_collision.colliderect(house_rect) and player_x <= 745:
                     player = player_sprites[2]
                     player_x += player_speed
-                else:
-                    # Prevent movement into the right side of the house
-                    if player_collision.right < house_rect.right:
-                        player_x = house_rect.left - player_collision.width
-            if player_x >= 745:
-                player_x = 745
-        elif backgrounds == hallway and player_x < 500:
+        if backgrounds == hallway and player_x <= 500:
             player = player_sprites[2]
             player_x += player_speed
 
 
     if KEY_UP:
-        predicted_collision = player_collision.move(0, -player_speed)
-        if not predicted_collision.colliderect(restricted_area):
-            player = player_sprites[3]
-            player_y -= player_speed
+        predicted_collision = player_collision.move(0, -player_speed * 1.7)
+        if backgrounds == outdoor:
+            if not predicted_collision.colliderect(house_rect) and player_y >= 0:
+                player = player_sprites[3]
+                player_y -= player_speed
 
     if KEY_DOWN:
         predicted_collision = player_collision.move(0, player_speed)
-        if not predicted_collision.colliderect(restricted_area):
-            if player_y < 430:
-                player = player_sprites[0]
-                player_y += player_speed
+        if not predicted_collision.colliderect(house_rect) and player_y < 430:
+            player = player_sprites[0]
+            player_y += player_speed
 
     drawScreen()
     display.flip()
