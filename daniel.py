@@ -1,3 +1,8 @@
+#Name: Daniel Lin
+#Course Code: ICS3U1
+#Code Description: Treasure hunt game
+#Due Date: December 6th 2024
+
 from pygame import *
 import random
 
@@ -18,6 +23,12 @@ KEY_UP = False
 KEY_DOWN = False
 
 #Character sprites
+#char_forward = image.load("C:\\Users\\Daniel\\PycharmProjects\\pythonProject\\sprites\\image (3) (1) (1) (1)\\image (1).png")
+#char_left = image.load("C:\\Users\\Daniel\\PycharmProjects\\pythonProject\\sprites\\image (3) (1) (1) (1)\\image (3) (1) (1).png")
+#char_right = image.load("C:\\Users\\Daniel\\PycharmProjects\\pythonProject\\sprites\\image (3) (1) (1) (1)\\image (3) (1) (1) (1).png")
+#char_back = image.load("C:\\Users\\Daniel\\PycharmProjects\\pythonProject\\sprites\\image (3) (1) (1) (1)\\image (1) (1).png")
+
+#Character sprites
 char_forward = image.load("C:\\Users\\2linm\\PycharmProjects\\PythonProject\\pygame files\\image (1) (1)\\image (1).png")
 char_left = image.load("C:\\Users\\2linm\\PycharmProjects\\PythonProject\\pygame files\\image (1) (1)\\image (3) (1) (1).png")
 char_right = image.load("C:\\Users\\2linm\\PycharmProjects\\PythonProject\\pygame files\\image (1) (1)\\image (3) (1) (1) (1).png")
@@ -28,6 +39,16 @@ char_forward = transform.scale(char_forward, (char_forward.get_width() * 2, char
 char_left = transform.scale(char_left, (char_left.get_width() * 2, char_left.get_height() * 2))
 char_right = transform.scale(char_right, (char_right.get_width() * 2, char_right.get_height() * 2))
 char_back = transform.scale(char_back, (char_back.get_width() * 2, char_back.get_height() * 2))
+
+#Backgrounds
+#outdoor = image.load("C:\\Users\\Daniel\\PycharmProjects\\pythonProject\\sprites\\image (3) (1) (1) (1)\\Outdoor.png")
+#hallway = image.load("C:\\Users\\Daniel\\PycharmProjects\\pythonProject\\sprites\\image (3) (1) (1) (1)\\Hallway.png")
+#living_room = image.load("C:\\Users\\Daniel\\PycharmProjects\\pythonProject\\sprites\\image (3) (1) (1) (1)\\Living room.png")
+#kitchen = image.load("C:\\Users\\Daniel\\PycharmProjects\\pythonProject\\sprites\\image (3) (1) (1) (1)\\Kitchen.png")
+#dining_room = image.load("C:\\Users\\Daniel\\PycharmProjects\\pythonProject\\sprites\\image (3) (1) (1) (1)\\Dining room.png")
+#bathroom = image.load("C:\\Users\\Daniel\\PycharmProjects\\pythonProject\\sprites\\image (3) (1) (1) (1)\\Bathroom.png")
+#Room1 = image.load("C:\\Users\\Daniel\\PycharmProjects\\pythonProject\\sprites\\image (3) (1) (1) (1)\\Room1.png")
+#Room2 = image.load("C:\\Users\\Daniel\\PycharmProjects\\pythonProject\\sprites\\image (3) (1) (1) (1)\\Room2.png")
 
 #Backgrounds
 outdoor = image.load("C:\\Users\\2linm\\PycharmProjects\\PythonProject\\pygame files\\image (1) (1)\\Outdoor.png")
@@ -50,7 +71,7 @@ player_x = 360
 player_y = 400
 
 #Player speed
-player_speed = 3
+player_speed = 5
 
 #Background list
 backgrounds = [outdoor, hallway, living_room, kitchen, dining_room, bathroom, Room1, Room2]
@@ -65,13 +86,10 @@ WHITE = (255, 255, 255)
 start_text = my_font.render("There's been some suspicious activity around the Howard house, best to investigate", True, WHITE)
 my_text = my_font.render("Press E to interact", True, WHITE)
 
-#Object hit boxes
+#Door hit boxes
 house_door = Rect(320, 100, 120, 20)
 house_door_H = Rect(320, 470, 120, 20)
-house_rect = Rect(145, 0, 495, 95)
 hallway_L = Rect(230, 290, 20, 100)
-tree1 = Rect(110, 175, 80, 80)
-tree2 = Rect(568, 155, 60, 78)
 living_room_door_H = Rect(740, 340, 10, 80)
 living_room_door_K = Rect(100, 0, 100, 20)
 kitchen_L = Rect(100, 422, 120, 20)
@@ -82,7 +100,32 @@ hallway_R1 = Rect(230, 90, 20, 80)
 Room2_H = Rect(775, 190, 25, 110)
 Room1_H = Rect(775, 190, 25, 110)
 hallway_B = Rect(310, 0, 80, 25)
-bathroom_H = Rect(290, 15, 100, 20)
+bathroom_H = Rect(360, 475, 100, 20)
+
+#Object hit boxes
+house_rect = Rect(145, 0, 495, 95)
+tree1 = Rect(110, 175, 80, 80)
+tree2 = Rect(568, 155, 60, 78)
+drawer_H = Rect(520, 200, 50, 68)
+bookshelf_L = Rect(750, 50, 80, 150)
+couch = Rect(320, 255, 160, 25)
+chip_table = Rect(230, 320, 30, 40)
+TV = Rect(350, 460, 115, 20)
+kitchen_table_1 = Rect(0, 0, 70, 335)
+kitchen_table_2 = Rect(280, 180, 260, 140)
+kitchen_table_3_1 = Rect(385, 0, 800, 90)
+kitchen_table_3_2 = Rect(700, 0, 800, 335)
+garbage = Rect(650, 100, 50, 50)
+dining_table = Rect(260, 150, 330, 180)
+room2_table = Rect(375, 435, 110, 50)
+room2_drawer = Rect(530, 0, 100, 60)
+room2_bookshelf = Rect(0, 0, 70, 200)
+room1_table = Rect(375, 435, 110, 50)
+room1_drawer = Rect(530, 0, 100, 60)
+treasure = Rect(0, 165, 100, 130)
+sink = Rect(180, 250, 35, 95)
+bathtub = Rect(580, 130, 90, 190)
+toilet = Rect(380, 0, 60, 40)
 
 # Player hit box
 player_collision = Rect(player_x, player_y, 64, 64)
@@ -150,7 +193,7 @@ def drawScreen():
     if backgrounds == bathroom:
         screen.blit(player, (player_x, player_y))
         if player_collision.colliderect(bathroom_H):
-            screen.blit(my_text, (290, 20))
+            screen.blit(my_text, (350, 460))
 
     display.flip()
 
@@ -246,7 +289,12 @@ while running:
                     player_y = 75
                     player = player_sprites[2]
                     backgrounds = hallway
-
+                #Bathroom
+                elif backgrounds == bathroom and player_collision.colliderect(bathroom_H):
+                    player_x = 305
+                    player_y = 15
+                    player = player_sprites[0]
+                    backgrounds = hallway
 
 
         #Initializing key state
@@ -264,6 +312,7 @@ while running:
     player_collision = Rect(player_x, player_y, 64, 64)
 
     if KEY_LEFT:
+        player = player_sprites[1]
         predicted_collision = player_collision.move(-player_speed * 1.5, 0)
 
         #Outdoor
@@ -273,42 +322,45 @@ while running:
                     player_x -= player_speed
 
         #Hallway
-        elif backgrounds == hallway and player_x >= 230:
-            player = player_sprites[1]
-            player_x -= player_speed
+        elif backgrounds == hallway:
+            if not predicted_collision.colliderect(drawer_H) and player_x >= 230:
+                player = player_sprites[1]
+                player_x -= player_speed
 
         #Living Room
-        elif backgrounds == living_room and player_x >= -10:
-            player = player_sprites[1]
-            player_x -= player_speed
+        elif backgrounds == living_room:
+            if not predicted_collision.colliderect(bookshelf_L) and not predicted_collision.colliderect(couch) and not predicted_collision.colliderect(chip_table) and not predicted_collision.colliderect(TV) and player_x >= -10:
+                player = player_sprites[1]
+                player_x -= player_speed
 
         #Kitchen
-        elif backgrounds == kitchen and player_x >= -10:
+        elif backgrounds == kitchen and not predicted_collision.colliderect(kitchen_table_1) and not predicted_collision.colliderect(kitchen_table_2) and not predicted_collision.colliderect(kitchen_table_3_1) and not predicted_collision.colliderect(kitchen_table_3_2) and not predicted_collision.colliderect(garbage) and player_x >= -10:
             player = player_sprites[1]
             player_x -= player_speed
 
         #Dining Room
-        elif backgrounds == dining_room and player_x >= -10:
+        elif backgrounds == dining_room and not predicted_collision.colliderect(dining_table) and player_x >= -10:
             player = player_sprites[1]
             player_x -= player_speed
 
         #Room2
-        elif backgrounds == Room2 and player_x >= -10:
+        elif backgrounds == Room2 and not predicted_collision.colliderect(room2_table) and not predicted_collision.colliderect(room2_drawer) and not predicted_collision.colliderect(room2_bookshelf) and player_x >= -10:
             player = player_sprites[1]
             player_x -= player_speed
 
         #Room1
-        elif backgrounds == Room1 and player_x >= -10:
+        elif backgrounds == Room1 and not predicted_collision.colliderect(room1_table) and not predicted_collision.colliderect(room1_drawer) and not predicted_collision.colliderect(treasure) and player_x >= -10:
             player = player_sprites[1]
             player_x -= player_speed
 
         #Bathroom
-        elif backgrounds == bathroom and player_x >= 173:
+        elif backgrounds == bathroom and not predicted_collision.colliderect(sink) and not predicted_collision.colliderect(bathtub) and not predicted_collision.colliderect(toilet) and player_x >= 173:
             player = player_sprites[1]
             player_x -= player_speed
 
 
     if KEY_RIGHT:
+        player = player_sprites[2]
         predicted_collision = player_collision.move(player_speed, 0)
 
         #Outdoor
@@ -318,42 +370,45 @@ while running:
                 player_x += player_speed
 
         #Hallway
-        elif backgrounds == hallway and player_x <= 500:
-            player = player_sprites[2]
-            player_x += player_speed
+        elif backgrounds == hallway:
+            if not predicted_collision.colliderect(drawer_H) and player_x <= 500:
+                player = player_sprites[2]
+                player_x += player_speed
 
         #Living Room
-        elif backgrounds == living_room and player_x <= 740:
-            player = player_sprites[2]
-            player_x += player_speed
+        elif backgrounds == living_room:
+            if not predicted_collision.colliderect(bookshelf_L) and not predicted_collision.colliderect(couch) and not predicted_collision.colliderect(chip_table) and not predicted_collision.colliderect(TV) and player_x <= 740:
+                player = player_sprites[2]
+                player_x += player_speed
 
         #Kitchen
-        elif backgrounds == kitchen and player_x <= 740:
+        elif backgrounds == kitchen and not predicted_collision.colliderect(kitchen_table_1) and not predicted_collision.colliderect(kitchen_table_2) and not predicted_collision.colliderect(kitchen_table_3_1) and not predicted_collision.colliderect(kitchen_table_3_2) and not predicted_collision.colliderect(garbage) and player_x <= 740:
             player = player_sprites[2]
             player_x += player_speed
 
         #Dining Room
-        elif backgrounds == dining_room and player_x <= 740:
+        elif backgrounds == dining_room and not predicted_collision.colliderect(dining_table) and player_x <= 740:
             player = player_sprites[2]
             player_x += player_speed
 
         #Room2
-        elif backgrounds == Room2 and player_x <= 740:
+        elif backgrounds == Room2 and not predicted_collision.colliderect(room2_table) and not predicted_collision.colliderect(room2_drawer) and not predicted_collision.colliderect(room2_bookshelf) and player_x <= 740:
             player = player_sprites[2]
             player_x += player_speed
 
         #Room1
-        elif backgrounds == Room1 and player_x <= 740:
+        elif backgrounds == Room1 and not predicted_collision.colliderect(room1_table) and not predicted_collision.colliderect(room1_drawer) and not predicted_collision.colliderect(treasure) and player_x <= 740:
             player = player_sprites[2]
             player_x += player_speed
 
         #Bathroom
-        elif backgrounds == bathroom and player_x <= 585:
+        elif backgrounds == bathroom and not predicted_collision.colliderect(sink) and not predicted_collision.colliderect(bathtub) and not predicted_collision.colliderect(toilet) and player_x <= 585:
             player = player_sprites[2]
             player_x += player_speed
 
 
     if KEY_UP:
+        player = player_sprites[3]
         predicted_collision = player_collision.move(0, -player_speed * 1.7)
 
         #Outdoor
@@ -363,41 +418,44 @@ while running:
                 player_y -= player_speed
 
         #Hallway
-        elif backgrounds == hallway and player_y >= 5:
-            player = player_sprites[3]
-            player_y -= player_speed
+        elif backgrounds == hallway:
+            if not predicted_collision.colliderect(drawer_H) and player_y >= 5:
+                player = player_sprites[3]
+                player_y -= player_speed
 
         #Living Room
-        elif backgrounds == living_room and player_y >= 5:
-            player = player_sprites[3]
-            player_y -= player_speed
+        elif backgrounds == living_room:
+            if not predicted_collision.colliderect(bookshelf_L) and not predicted_collision.colliderect(couch) and not predicted_collision.colliderect(chip_table) and not predicted_collision.colliderect(TV) and player_y >= 5:
+                player = player_sprites[3]
+                player_y -= player_speed
 
         #Kitchen
-        elif backgrounds == kitchen and player_y >= 5:
+        elif backgrounds == kitchen and not predicted_collision.colliderect(kitchen_table_1) and not predicted_collision.colliderect(kitchen_table_2) and not predicted_collision.colliderect(kitchen_table_3_1) and not predicted_collision.colliderect(kitchen_table_3_2) and not predicted_collision.colliderect(garbage) and player_y >= 5:
             player = player_sprites[3]
             player_y -= player_speed
 
         #Dining Room
-        elif backgrounds == dining_room and player_y >= 5:
+        elif backgrounds == dining_room and not predicted_collision.colliderect(dining_table) and player_y >= 5:
             player = player_sprites[3]
             player_y -= player_speed
 
         #Room2
-        elif backgrounds == Room2 and player_y >= 5:
+        elif backgrounds == Room2 and not predicted_collision.colliderect(room2_table) and not predicted_collision.colliderect(room2_drawer) and not predicted_collision.colliderect(room2_bookshelf) and player_y >= 5:
             player = player_sprites[3]
             player_y -= player_speed
 
         #Room1
-        elif backgrounds == Room1 and player_x >= 5:
+        elif backgrounds == Room1 and not predicted_collision.colliderect(room1_table) and not predicted_collision.colliderect(room1_drawer) and not predicted_collision.colliderect(treasure) and player_y >= 5:
             player = player_sprites[3]
             player_y -= player_speed
 
         #Bathroom
-        elif backgrounds == bathroom and player_x >= 5:
+        elif backgrounds == bathroom and not predicted_collision.colliderect(sink) and not predicted_collision.colliderect(bathtub) and not predicted_collision.colliderect(toilet) and player_y >= 5:
             player = player_sprites[3]
             player_y -= player_speed
 
     if KEY_DOWN:
+        player = player_sprites[0]
         predicted_collision = player_collision.move(0, player_speed)
 
         #Outdoor
@@ -408,36 +466,38 @@ while running:
 
         #Hallway
         elif backgrounds == hallway and player_y <= 426:
-            player = player_sprites[0]
-            player_y += player_speed
+            if not predicted_collision.colliderect(drawer_H) and player_y <= 426:
+                player = player_sprites[0]
+                player_y += player_speed
 
         #Living Room
         elif backgrounds == living_room and player_y <= 426:
-            player = player_sprites[0]
-            player_y += player_speed
+            if not predicted_collision.colliderect(bookshelf_L) and not predicted_collision.colliderect(couch) and not predicted_collision.colliderect(chip_table) and not predicted_collision.colliderect(TV) and player_y <= 426:
+                player = player_sprites[0]
+                player_y += player_speed
 
         #Kitchen
-        elif backgrounds == kitchen and player_y <= 426:
+        elif backgrounds == kitchen and not predicted_collision.colliderect(kitchen_table_1) and not predicted_collision.colliderect(kitchen_table_2) and not predicted_collision.colliderect(kitchen_table_3_1) and not predicted_collision.colliderect(kitchen_table_3_2) and not predicted_collision.colliderect(garbage) and player_y <= 426:
             player = player_sprites[0]
             player_y += player_speed
 
         #Dining Room
-        elif backgrounds == dining_room and player_y <= 426:
+        elif backgrounds == dining_room and not predicted_collision.colliderect(dining_table) and player_y <= 426:
             player = player_sprites[0]
             player_y += player_speed
 
         #Room2
-        elif backgrounds == Room2 and player_y <= 426:
+        elif backgrounds == Room2 and not predicted_collision.colliderect(room2_table) and not predicted_collision.colliderect(room2_drawer) and not predicted_collision.colliderect(room2_bookshelf) and player_y <= 426:
             player = player_sprites[0]
             player_y += player_speed
 
         #Room1
-        elif backgrounds == Room1 and player_y <= 426:
+        elif backgrounds == Room1 and not predicted_collision.colliderect(room1_table) and not predicted_collision.colliderect(room1_drawer) and not predicted_collision.colliderect(treasure) and player_y <= 426:
             player = player_sprites[0]
             player_y += player_speed
 
         #Bathroom
-        elif backgrounds == bathroom and player_y <= 426:
+        elif backgrounds == bathroom and not predicted_collision.colliderect(sink) and not predicted_collision.colliderect(bathtub) and not predicted_collision.colliderect(toilet) and player_y <= 426:
             player = player_sprites[0]
             player_y += player_speed
 
