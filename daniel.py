@@ -8,6 +8,9 @@ import random
 
 init()
 
+#Inventory
+inventory = open("Inventory", "w").close()
+
 info = display.Info()
 
 #Screen size
@@ -23,16 +26,16 @@ KEY_UP = False
 KEY_DOWN = False
 
 #Character sprites
-#char_forward = image.load("C:\\Users\\Daniel\\PycharmProjects\\pythonProject\\sprites\\image (3) (1) (1) (1)\\image (1).png")
-#char_left = image.load("C:\\Users\\Daniel\\PycharmProjects\\pythonProject\\sprites\\image (3) (1) (1) (1)\\image (3) (1) (1).png")
-#char_right = image.load("C:\\Users\\Daniel\\PycharmProjects\\pythonProject\\sprites\\image (3) (1) (1) (1)\\image (3) (1) (1) (1).png")
-#char_back = image.load("C:\\Users\\Daniel\\PycharmProjects\\pythonProject\\sprites\\image (3) (1) (1) (1)\\image (1) (1).png")
+char_forward = image.load("C:\\Users\\Daniel\\PycharmProjects\\pythonProject\\sprites\\image (3) (1) (1) (1)\\image (1).png")
+char_left = image.load("C:\\Users\\Daniel\\PycharmProjects\\pythonProject\\sprites\\image (3) (1) (1) (1)\\image (3) (1) (1).png")
+char_right = image.load("C:\\Users\\Daniel\\PycharmProjects\\pythonProject\\sprites\\image (3) (1) (1) (1)\\image (3) (1) (1) (1).png")
+char_back = image.load("C:\\Users\\Daniel\\PycharmProjects\\pythonProject\\sprites\\image (3) (1) (1) (1)\\image (1) (1).png")
 
 #Character sprites
-char_forward = image.load("C:\\Users\\2linm\\PycharmProjects\\PythonProject\\pygame files\\image (1) (1)\\image (1).png")
-char_left = image.load("C:\\Users\\2linm\\PycharmProjects\\PythonProject\\pygame files\\image (1) (1)\\image (3) (1) (1).png")
-char_right = image.load("C:\\Users\\2linm\\PycharmProjects\\PythonProject\\pygame files\\image (1) (1)\\image (3) (1) (1) (1).png")
-char_back = image.load("C:\\Users\\2linm\\PycharmProjects\\PythonProject\\pygame files\\image (1) (1)\\image (1) (1).png")
+#char_forward = image.load("C:\\Users\\2linm\\PycharmProjects\\PythonProject\\pygame files\\image (1) (1)\\image (1).png")
+#char_left = image.load("C:\\Users\\2linm\\PycharmProjects\\PythonProject\\pygame files\\image (1) (1)\\image (3) (1) (1).png")
+#char_right = image.load("C:\\Users\\2linm\\PycharmProjects\\PythonProject\\pygame files\\image (1) (1)\\image (3) (1) (1) (1).png")
+#char_back = image.load("C:\\Users\\2linm\\PycharmProjects\\PythonProject\\pygame files\\image (1) (1)\\image (1) (1).png")
 
 #Doubling character size
 char_forward = transform.scale(char_forward, (char_forward.get_width() * 2, char_forward.get_height() * 2))
@@ -41,24 +44,24 @@ char_right = transform.scale(char_right, (char_right.get_width() * 2, char_right
 char_back = transform.scale(char_back, (char_back.get_width() * 2, char_back.get_height() * 2))
 
 #Backgrounds
-#outdoor = image.load("C:\\Users\\Daniel\\PycharmProjects\\pythonProject\\sprites\\image (3) (1) (1) (1)\\Outdoor.png")
-#hallway = image.load("C:\\Users\\Daniel\\PycharmProjects\\pythonProject\\sprites\\image (3) (1) (1) (1)\\Hallway.png")
-#living_room = image.load("C:\\Users\\Daniel\\PycharmProjects\\pythonProject\\sprites\\image (3) (1) (1) (1)\\Living room.png")
-#kitchen = image.load("C:\\Users\\Daniel\\PycharmProjects\\pythonProject\\sprites\\image (3) (1) (1) (1)\\Kitchen.png")
-#dining_room = image.load("C:\\Users\\Daniel\\PycharmProjects\\pythonProject\\sprites\\image (3) (1) (1) (1)\\Dining room.png")
-#bathroom = image.load("C:\\Users\\Daniel\\PycharmProjects\\pythonProject\\sprites\\image (3) (1) (1) (1)\\Bathroom.png")
-#Room1 = image.load("C:\\Users\\Daniel\\PycharmProjects\\pythonProject\\sprites\\image (3) (1) (1) (1)\\Room1.png")
-#Room2 = image.load("C:\\Users\\Daniel\\PycharmProjects\\pythonProject\\sprites\\image (3) (1) (1) (1)\\Room2.png")
+outdoor = image.load("C:\\Users\\Daniel\\PycharmProjects\\pythonProject\\sprites\\image (3) (1) (1) (1)\\Outdoor.png")
+hallway = image.load("C:\\Users\\Daniel\\PycharmProjects\\pythonProject\\sprites\\image (3) (1) (1) (1)\\Hallway.png")
+living_room = image.load("C:\\Users\\Daniel\\PycharmProjects\\pythonProject\\sprites\\image (3) (1) (1) (1)\\Living room.png")
+kitchen = image.load("C:\\Users\\Daniel\\PycharmProjects\\pythonProject\\sprites\\image (3) (1) (1) (1)\\Kitchen.png")
+dining_room = image.load("C:\\Users\\Daniel\\PycharmProjects\\pythonProject\\sprites\\image (3) (1) (1) (1)\\Dining room.png")
+bathroom = image.load("C:\\Users\\Daniel\\PycharmProjects\\pythonProject\\sprites\\image (3) (1) (1) (1)\\Bathroom.png")
+Room1 = image.load("C:\\Users\\Daniel\\PycharmProjects\\pythonProject\\sprites\\image (3) (1) (1) (1)\\Room1.png")
+Room2 = image.load("C:\\Users\\Daniel\\PycharmProjects\\pythonProject\\sprites\\image (3) (1) (1) (1)\\Room2.png")
 
 #Backgrounds
-outdoor = image.load("C:\\Users\\2linm\\PycharmProjects\\PythonProject\\pygame files\\image (1) (1)\\Outdoor.png")
-hallway = image.load("C:\\Users\\2linm\\PycharmProjects\\PythonProject\\pygame files\\image (1) (1)\\hallway.png")
-living_room = image.load("C:\\Users\\2linm\\PycharmProjects\\PythonProject\\pygame files\\image (1) (1)\\Living room.png")
-kitchen = image.load("C:\\Users\\2linm\\PycharmProjects\\PythonProject\\pygame files\\image (1) (1)\\Kitchen.png")
-dining_room = image.load("C:\\Users\\2linm\\PycharmProjects\\PythonProject\\pygame files\\image (1) (1)\\Dining room.png")
-bathroom = image.load("C:\\Users\\2linm\\PycharmProjects\\PythonProject\\pygame files\\image (1) (1)\\Bathroom.png")
-Room1 = image.load("C:\\Users\\2linm\\PycharmProjects\\PythonProject\\pygame files\\image (1) (1)\\Room1.png")
-Room2 = image.load("C:\\Users\\2linm\\PycharmProjects\\PythonProject\\pygame files\\image (1) (1)\\Room2.png")
+#outdoor = image.load("C:\\Users\\2linm\\PycharmProjects\\PythonProject\\pygame files\\image (1) (1)\\Outdoor.png")
+#hallway = image.load("C:\\Users\\2linm\\PycharmProjects\\PythonProject\\pygame files\\image (1) (1)\\hallway.png")
+#living_room = image.load("C:\\Users\\2linm\\PycharmProjects\\PythonProject\\pygame files\\image (1) (1)\\Living room.png")
+#kitchen = image.load("C:\\Users\\2linm\\PycharmProjects\\PythonProject\\pygame files\\image (1) (1)\\Kitchen.png")
+#dining_room = image.load("C:\\Users\\2linm\\PycharmProjects\\PythonProject\\pygame files\\image (1) (1)\\Dining room.png")
+#bathroom = image.load("C:\\Users\\2linm\\PycharmProjects\\PythonProject\\pygame files\\image (1) (1)\\Bathroom.png")
+#Room1 = image.load("C:\\Users\\2linm\\PycharmProjects\\PythonProject\\pygame files\\image (1) (1)\\Room1.png")
+#Room2 = image.load("C:\\Users\\2linm\\PycharmProjects\\PythonProject\\pygame files\\image (1) (1)\\Room2.png")
 
 #Character Sprites
 player_sprites = [char_forward, char_left, char_right, char_back]
@@ -85,6 +88,19 @@ WHITE = (255, 255, 255)
 #Interact text
 start_text = my_font.render("There's been some suspicious activity around the Howard house, best to investigate", True, WHITE)
 my_text = my_font.render("Press E to interact", True, WHITE)
+entrance_text = my_font.render("Why is the front door unlocked?", True, WHITE)
+
+#Random stuff
+entrance_random = random.randint(1, 2)
+
+#Clues
+entrance_clue_1= my_font.render("Hmm, the welcome mat is suspicious, why is it near the bathroom?", True, WHITE)
+entrance_clue_2 = my_font.render("Ah, the drawer looks tampered with!", True, WHITE)
+Clue_list = [entrance_clue_1, entrance_clue_2]
+
+#Clue timer
+message_time = time.get_ticks()
+clue_time = 8000
 
 #Door hit boxes
 house_door = Rect(320, 100, 120, 20)
@@ -107,6 +123,7 @@ house_rect = Rect(145, 0, 495, 95)
 tree1 = Rect(110, 175, 80, 80)
 tree2 = Rect(568, 155, 60, 78)
 drawer_H = Rect(520, 200, 50, 68)
+drawer_H_H = Rect(510, 190, 60, 78)
 bookshelf_L = Rect(750, 50, 80, 150)
 couch = Rect(320, 255, 160, 25)
 chip_table = Rect(230, 320, 30, 40)
@@ -126,12 +143,17 @@ treasure = Rect(0, 165, 100, 130)
 sink = Rect(180, 250, 35, 95)
 bathtub = Rect(580, 130, 90, 190)
 toilet = Rect(380, 0, 60, 40)
+carpet_H = Rect(430, 0, 100, 60)
 
-# Player hit box
+#Player hit box
 player_collision = Rect(player_x, player_y, 64, 64)
 
+#Initialize
+display_text = False
 
 def drawScreen():
+    global display_text  # This tells Python that we're using the global display_text variable
+
     screen.blit(backgrounds, (0, 0))
 
     #Outdoor
@@ -143,6 +165,23 @@ def drawScreen():
 
     #Hallway
     if backgrounds == hallway:
+        if time.get_ticks() - message_time < 4000:
+            screen.blit(entrance_text, (290, 460))
+        else:
+            display_text = True
+
+        if display_text:
+            #Clue 1
+            if entrance_random == 1:
+                if time.get_ticks() - message_time < clue_time:
+                    screen.blit(Clue_list[0], (190, 460))
+                    display_text = False
+            #Clue 2
+            if entrance_random == 2:
+                if time.get_ticks() - message_time < clue_time:
+                    screen.blit(Clue_list[1], (285, 460))
+                    display_text = False
+
         screen.blit(player, (player_x, player_y))
         if player_collision.colliderect(hallway_L):
             screen.blit(my_text, (185, 300))
@@ -154,6 +193,10 @@ def drawScreen():
             screen.blit(my_text, (185, 30))
         elif player_collision.colliderect(hallway_B):
             screen.blit(my_text, (280, 20))
+        elif predicted_collision.colliderect(carpet_H):
+            screen.blit(my_text, (433, 2))
+        elif predicted_collision.colliderect(drawer_H_H):
+            screen.blit(my_text, (435, 185))
 
     #Living Room
     if backgrounds == living_room:
@@ -193,7 +236,7 @@ def drawScreen():
     if backgrounds == bathroom:
         screen.blit(player, (player_x, player_y))
         if player_collision.colliderect(bathroom_H):
-            screen.blit(my_text, (350, 460))
+            screen.blit(my_text, (330, 460))
 
     display.flip()
 
@@ -229,6 +272,14 @@ while running:
                     player_y = 120
                     player = player_sprites[0]
                     backgrounds = outdoor
+                elif entrance_random == 1 and backgrounds == hallway and predicted_collision.colliderect(carpet_H):
+                    inventory = open("Inventory", "w")
+                    inventory.write("living_room_key")
+                    inventory.close()
+                elif entrance_random == 2 and backgrounds == hallway and predicted_collision.colliderect(drawer_H):
+                    inventory = open("Inventory", "w")
+                    inventory.write("living_room_key")
+                    inventory.close()
                 elif backgrounds == hallway and player_collision.colliderect(hallway_L):
                     player_x = 740
                     player_y = 340
