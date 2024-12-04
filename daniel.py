@@ -132,6 +132,7 @@ paper_K = Rect(50, 400, 50, 50)
 
 #Font
 my_font = font.Font(None, 20)
+big_font = font.Font(None, 40)
 WHITE = (255, 255, 255)
 
 #Interact text
