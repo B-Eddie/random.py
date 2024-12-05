@@ -34,8 +34,10 @@ living_room = image.load("C:\\Users\\Daniel\\PycharmProjects\\pythonProject\\spr
 kitchen = image.load("C:\\Users\\Daniel\\PycharmProjects\\pythonProject\\sprites\\image (3) (1) (1) (1)\\Kitchen.png")
 dining_room = image.load("C:\\Users\\Daniel\\PycharmProjects\\pythonProject\\sprites\\image (3) (1) (1) (1)\\Dining room.png")
 bathroom = image.load("C:\\Users\\Daniel\\PycharmProjects\\pythonProject\\sprites\\image (3) (1) (1) (1)\\Bathroom.png")
+dark_bathroom = image.load("C:\\Users\\Daniel\\PycharmProjects\\pythonProject\\sprites\\image (3) (1) (1) (1)\\Dark bathroom.png")
 Room1 = image.load("C:\\Users\\Daniel\\PycharmProjects\\pythonProject\\sprites\\image (3) (1) (1) (1)\\Room1.png")
 Room2 = image.load("C:\\Users\\Daniel\\PycharmProjects\\pythonProject\\sprites\\image (3) (1) (1) (1)\\Room2.png")
+
 
 #Backgrounds
 #outdoor = image.load("C:\\Users\\2linm\\PycharmProjects\\PythonProject\\pygame files\\image (1) (1)\\Outdoor.png")
@@ -134,6 +136,9 @@ carpet_L = Rect(300, 170, 200, 70)
 paper_K = Rect(100, 380, 50, 20)
 pipe_door = Rect(400, 80, 80, 50)
 fruits = Rect(300, 320, 60, 60)
+painting = Rect(0, 200, 20, 150)
+food = Rect(250, 180, 50, 50)
+dog_food = Rect(0, 0, 50, 50)
 
 #Font
 my_font = font.Font(None, 20)
@@ -150,11 +155,13 @@ key_L = my_font.render("YOU FOUND THE KEY TO THE LIVING ROOM!", True, WHITE)
 key_H = my_font.render("YOU FOUND THE KEY TO THE KITCHEN!", True, WHITE)
 key_K = my_font.render("YOU FOUND THE KEY TO THE DINING ROOM!", True, WHITE)
 flashlight = my_font.render("YOU FOUND THE FLASHLIGHT, USE IT IN THE BATHROOM!", True, WHITE)
+dark = big_font.render("IT IS TOO DARK TO SEE ANYTHING", True, WHITE)
 
 #Random clue
 entrance_random = random.randint(1, 2)
 living_random = random.randint(2,4)
 kitchen_random = random.randint(5, 6)
+dining_random = random.randint(7, 8)
 
 #Clues
 entrance_clue_1= my_font.render("Hmm, the welcome mat is suspicious, why is it near the bathroom?", True, WHITE)
@@ -164,8 +171,12 @@ living_clue_2 = my_font.render("The paper says \"I left the kitchen key under th
 living_clue_3 = my_font.render("The paper says \"I may have lost the kitchen key while eating chips, sorry\"", True, WHITE)
 kitchen_clue_1 = my_font.render("The paper says \"I was grocery shopping, I lost the dining room key, could be in all the food\"", True, WHITE)
 kitchen_clue_2 = my_font.render("The paper says \"The key disappeared while I was cleaning out the pipes\"", True, WHITE)
-Clue_list = [entrance_clue_1, entrance_clue_2, living_clue_1, living_clue_2, living_clue_3, kitchen_clue_1, kitchen_clue_2]
-            #  0                1                  2             3                  4           5              6
+dining_clue_1 = my_font.render("Why does the painting say \"The dog got the flashlight\"?", True, WHITE)
+dining_clue_2 = my_font.render("Why does the painting say \"The flashlight is now yellow I guess\"?", True, WHITE)
+bathroom_clue_1 = my_font.render("The toilet paper says \"Room keys are under towels\"", True, WHITE)
+bathroom_clue_2 = my_font.render("The toilet paper says \"Room keys are in the human waste receptacle\"", True, WHITE)
+Clue_list = [entrance_clue_1, entrance_clue_2, living_clue_1, living_clue_2, living_clue_3, kitchen_clue_1, kitchen_clue_2, dining_clue_1, dining_clue_2, bathroom_clue_1, bathroom_clue_2]
+            #  0                1                  2             3                  4           5              6                 7             8              9                 10
 #Timers
 message_duration = 2000
 clue_time = 3000
@@ -176,15 +187,17 @@ entrance_2_start = 0
 key_time_H = 0
 key_time_L = 0
 key_time_K = 0
+flash_time = 0
 
 #Text states
 display_text = False
 display_text_2 = False
 show_clue_L = False
 show_clue_K = False
+show_clue_D = False
 
 def drawScreen():
-    global message_time, display_text, display_text_2, clue_start_time, key_time_H, key_time_L, key_time_K, entrance_2_start, entrance_start_duration
+    global message_time, display_text, display_text_2, clue_start_time, key_time_H, key_time_L, key_time_K, flash_time, entrance_2_start, entrance_start_duration
     screen.blit(backgrounds, (0, 0))
 
     # Outdoor
@@ -308,6 +321,23 @@ def drawScreen():
         screen.blit(player, (player_x, player_y))
         if player_collision.colliderect(dining_room_K):
             screen.blit(my_text, (75, 460))
+        if player_collision.colliderect(painting):
+            screen.blit(my_text, (10, 200))
+        if player_collision.colliderect(dog_food):
+            screen.blit(my_text, (5, 10))
+        if player_collision.colliderect(food):
+            screen.blit(my_text, (200, 200))
+        if show_clue_D:
+            screen.blit(Clue_list[dining_random], (10, 250))
+        content = open("Inventory", "r")
+        for line in content:
+            if "flashlight" in line:
+                if flash_time == 0:
+                    flash_time = time.get_ticks()
+                    content.close()
+                    break
+                if time.get_ticks() - flash_time < message_duration:
+                    screen.blit(flashlight, (170, 140))
 
     #Room2
     if backgrounds == Room2:
@@ -328,6 +358,10 @@ def drawScreen():
         if player_collision.colliderect(bathroom_H):
             screen.blit(my_text, (330, 460))
 
+    #Dark Bathroom
+    if backgrounds == dark_bathroom:
+        screen.blit(dark, (180, 220))
+        screen.blit(my_text, (340, 400))
     display.flip()
 
 #Initializing clock
@@ -396,11 +430,13 @@ while running:
                     player_y = 210
                     player = player_sprites[1]
                     backgrounds = Room1
-                elif backgrounds == hallway and player_collision.colliderect(hallway_B):
+                elif backgrounds == hallway and player_collision.colliderect(hallway_B) and "flashlight" in current_inventory:
                     player_x = 380
                     player_y = 426
                     player = player_sprites[3]
                     backgrounds = bathroom
+                elif backgrounds == hallway and player_collision.colliderect(hallway_B) and "flashlight" not in current_inventory:
+                    backgrounds = dark_bathroom
 
                 #Living Room
                 elif backgrounds == living_room and player_collision.colliderect(living_room_door_H):
@@ -472,6 +508,18 @@ while running:
                     player_y = 10
                     player = player_sprites[0]
                     backgrounds = kitchen
+                elif dining_random == 7 and backgrounds == dining_room and player_collision.colliderect(dog_food):
+                    if "flashlight" not in current_inventory:
+                        inventory = open("Inventory", "a")
+                        inventory.write("flashlight" + "\n")
+                        inventory.close()
+                        current_inventory.append("flashlight")
+                elif dining_random == 8 and backgrounds == dining_room and player_collision.colliderect(food):
+                    if "flashlight" not in current_inventory:
+                        inventory = open("Inventory", "a")
+                        inventory.write("flashlight" + "\n")
+                        inventory.close()
+                        current_inventory.append("flashlight")
 
                 #Room2
                 elif backgrounds == Room2 and player_collision.colliderect(Room2_H):
@@ -489,6 +537,13 @@ while running:
 
                 #Bathroom
                 elif backgrounds == bathroom and player_collision.colliderect(bathroom_H):
+                    player_x = 305
+                    player_y = 15
+                    player = player_sprites[0]
+                    backgrounds = hallway
+
+                #Dark bathroom
+                elif backgrounds == dark_bathroom:
                     player_x = 305
                     player_y = 15
                     player = player_sprites[0]
@@ -521,6 +576,13 @@ while running:
                         show_clue_K = True
                     else:
                         show_clue_K = False
+        if backgrounds == dining_room:
+            if player_collision.colliderect(painting):
+                if evnt.type == KEYDOWN:
+                    if evnt.key == K_e:
+                        show_clue_D = True
+                    else:
+                        show_clue_D = False
 
     # Updating player collision
     player_collision = Rect(player_x, player_y, 64, 64)
