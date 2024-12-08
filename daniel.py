@@ -953,68 +953,36 @@ while running:
         #Outdoor
         if backgrounds == outdoor:
             if not predicted_collision.colliderect(house_rect) and not predicted_collision.colliderect(tree1) and not predicted_collision.colliderect(tree2) and player_x >= -10:
-                if police:
-                    player = player_sprites[1]
-                if robber:
-                    player2 = player_sprites[5]
                 player_x -= player_speed
 
         #Hallway
         elif backgrounds == hallway:
             if not predicted_collision.colliderect(drawer_H) and player_x >= 230:
-                if police:
-                    player = player_sprites[1]
-                if robber:
-                    player2 = player_sprites[5]
                 player_x -= player_speed
 
         #Living Room
         elif backgrounds == living_room:
             if not predicted_collision.colliderect(bookshelf_L) and not predicted_collision.colliderect(couch) and not predicted_collision.colliderect(chip_table) and not predicted_collision.colliderect(TV) and player_x >= -10:
-                if police:
-                    player = player_sprites[1]
-                if robber:
-                    player2 = player_sprites[5]
                 player_x -= player_speed
 
         #Kitchen
         elif backgrounds == kitchen and not predicted_collision.colliderect(kitchen_table_1) and not predicted_collision.colliderect(kitchen_table_2) and not predicted_collision.colliderect(kitchen_table_3_1) and not predicted_collision.colliderect(kitchen_table_3_2) and not predicted_collision.colliderect(garbage) and player_x >= -10:
-            if police:
-                player = player_sprites[1]
-            if robber:
-                player2 = player_sprites[5]
             player_x -= player_speed
 
         #Dining Room
         elif backgrounds == dining_room and not predicted_collision.colliderect(dining_table) and player_x >= -10:
-            if police:
-                player = player_sprites[1]
-            if robber:
-                player2 = player_sprites[5]
             player_x -= player_speed
 
         #Room2
         elif backgrounds == Room2 and not predicted_collision.colliderect(room2_table) and not predicted_collision.colliderect(room2_drawer) and not predicted_collision.colliderect(room2_bookshelf) and player_x >= -10:
-            if police:
-                player = player_sprites[1]
-            if robber:
-                player2 = player_sprites[5]
             player_x -= player_speed
 
         #Room1
         elif backgrounds == Room1 and not predicted_collision.colliderect(room1_table) and not predicted_collision.colliderect(room1_drawer) and not predicted_collision.colliderect(treasure) and player_x >= -10:
-            if police:
-                player = player_sprites[1]
-            if robber:
-                player2 = player_sprites[5]
             player_x -= player_speed
 
         #Bathroom
         elif backgrounds == bathroom and not predicted_collision.colliderect(sink) and not predicted_collision.colliderect(bathtub) and not predicted_collision.colliderect(toilet) and player_x >= 173:
-            if police:
-                player = player_sprites[1]
-            if robber:
-                player2 = player_sprites[5]
             player_x -= player_speed
 
     if KEY_RIGHT:
@@ -1025,70 +993,35 @@ while running:
         predicted_collision = player_collision.move(player_speed, 0)
 
         #Outdoor
-        if backgrounds == outdoor:
-            if not predicted_collision.colliderect(house_rect) and not predicted_collision.colliderect(tree1) and not predicted_collision.colliderect(tree2) and player_x <= 745:
-                if police:
-                    player = player_sprites[2]
-                if robber:
-                    player2 = player_sprites[6]
+        if backgrounds == outdoor and not predicted_collision.colliderect(house_rect) and not predicted_collision.colliderect(tree1) and not predicted_collision.colliderect(tree2) and player_x <= 745:
                 player_x += player_speed
 
         #Hallway
-        elif backgrounds == hallway:
-            if not predicted_collision.colliderect(drawer_H) and player_x <= 500:
-                if police:
-                    player = player_sprites[2]
-                if robber:
-                    player2 = player_sprites[6]
+        elif backgrounds == hallway and not predicted_collision.colliderect(drawer_H) and player_x <= 500:
                 player_x += player_speed
 
         #Living Room
-        elif backgrounds == living_room:
-            if not predicted_collision.colliderect(bookshelf_L) and not predicted_collision.colliderect(couch) and not predicted_collision.colliderect(chip_table) and not predicted_collision.colliderect(TV) and player_x <= 740:
-                if police:
-                    player = player_sprites[2]
-                if robber:
-                    player2 = player_sprites[6]
+        elif backgrounds == living_room and not predicted_collision.colliderect(bookshelf_L) and not predicted_collision.colliderect(couch) and not predicted_collision.colliderect(chip_table) and not predicted_collision.colliderect(TV) and player_x <= 740:
                 player_x += player_speed
 
         #Kitchen
         elif backgrounds == kitchen and not predicted_collision.colliderect(kitchen_table_1) and not predicted_collision.colliderect(kitchen_table_2) and not predicted_collision.colliderect(kitchen_table_3_1) and not predicted_collision.colliderect(kitchen_table_3_2) and not predicted_collision.colliderect(garbage) and player_x <= 740:
-            if police:
-                player = player_sprites[2]
-            if robber:
-                player2 = player_sprites[6]
             player_x += player_speed
 
         #Dining Room
         elif backgrounds == dining_room and not predicted_collision.colliderect(dining_table) and player_x <= 740:
-            if police:
-                player = player_sprites[2]
-            if robber:
-                player2 = player_sprites[6]
             player_x += player_speed
 
         #Room2
         elif backgrounds == Room2 and not predicted_collision.colliderect(room2_table) and not predicted_collision.colliderect(room2_drawer) and not predicted_collision.colliderect(room2_bookshelf) and player_x <= 740:
-            if police:
-                player = player_sprites[2]
-            if robber:
-                player2 = player_sprites[6]
             player_x += player_speed
 
         #Room1
         elif backgrounds == Room1 and not predicted_collision.colliderect(room1_table) and not predicted_collision.colliderect(room1_drawer) and not predicted_collision.colliderect(treasure) and player_x <= 740:
-            if police:
-                player = player_sprites[2]
-            if robber:
-                player2 = player_sprites[6]
             player_x += player_speed
 
         #Bathroom
         elif backgrounds == bathroom and not predicted_collision.colliderect(sink) and not predicted_collision.colliderect(bathtub) and not predicted_collision.colliderect(toilet) and player_x <= 585:
-            if police:
-                player = player_sprites[2]
-            if robber:
-                player2 = player_sprites[6]
             player_x += player_speed
 
 
@@ -1100,70 +1033,35 @@ while running:
         predicted_collision = player_collision.move(0, -player_speed * 1.7)
 
         #Outdoor
-        if backgrounds == outdoor:
-            if not predicted_collision.colliderect(house_rect) and not predicted_collision.colliderect(tree1) and not predicted_collision.colliderect(tree2) and player_y >= 0:
-                if police:
-                    player = player_sprites[3]
-                if robber:
-                    player2 = player_sprites[7]
+        if backgrounds == outdoor and not predicted_collision.colliderect(house_rect) and not predicted_collision.colliderect(tree1) and not predicted_collision.colliderect(tree2) and player_y >= 0:
                 player_y -= player_speed
 
         #Hallway
-        elif backgrounds == hallway:
-            if not predicted_collision.colliderect(drawer_H) and player_y >= 5:
-                if police:
-                    player = player_sprites[3]
-                if robber:
-                    player2 = player_sprites[7]
-                player_y -= player_speed
+        elif backgrounds == hallway and not predicted_collision.colliderect(drawer_H) and player_y >= 5:
+            player_y -= player_speed
 
         #Living Room
-        elif backgrounds == living_room:
-            if not predicted_collision.colliderect(bookshelf_L) and not predicted_collision.colliderect(couch) and not predicted_collision.colliderect(chip_table) and not predicted_collision.colliderect(TV) and player_y >= 5:
-                if police:
-                    player = player_sprites[3]
-                if robber:
-                    player2 = player_sprites[7]
-                player_y -= player_speed
+        elif backgrounds == living_room and not predicted_collision.colliderect(bookshelf_L) and not predicted_collision.colliderect(couch) and not predicted_collision.colliderect(chip_table) and not predicted_collision.colliderect(TV) and player_y >= 5:
+            player_y -= player_speed
 
         #Kitchen
         elif backgrounds == kitchen and not predicted_collision.colliderect(kitchen_table_1) and not predicted_collision.colliderect(kitchen_table_2) and not predicted_collision.colliderect(kitchen_table_3_1) and not predicted_collision.colliderect(kitchen_table_3_2) and not predicted_collision.colliderect(garbage) and player_y >= 5:
-            if police:
-                player = player_sprites[3]
-            if robber:
-                player2 = player_sprites[7]
             player_y -= player_speed
 
         #Dining Room
         elif backgrounds == dining_room and not predicted_collision.colliderect(dining_table) and player_y >= 5:
-            if police:
-                player = player_sprites[3]
-            if robber:
-                player2 = player_sprites[7]
             player_y -= player_speed
 
         #Room2
         elif backgrounds == Room2 and not predicted_collision.colliderect(room2_table) and not predicted_collision.colliderect(room2_drawer) and not predicted_collision.colliderect(room2_bookshelf) and player_y >= 5:
-            if police:
-                player = player_sprites[3]
-            if robber:
-                player2 = player_sprites[7]
             player_y -= player_speed
 
         #Room1
         elif backgrounds == Room1 and not predicted_collision.colliderect(room1_table) and not predicted_collision.colliderect(room1_drawer) and not predicted_collision.colliderect(treasure) and player_y >= 5:
-            if police:
-                player = player_sprites[3]
-            if robber:
-                player2 = player_sprites[7]
             player_y -= player_speed
 
         #Bathroom
         elif backgrounds == bathroom and not predicted_collision.colliderect(sink) and not predicted_collision.colliderect(bathtub) and not predicted_collision.colliderect(toilet) and player_y >= 5:
-            if police:
-                player = player_sprites[3]
-            if robber:
-                player2 = player_sprites[7]
             player_y -= player_speed
 
     if KEY_DOWN:
