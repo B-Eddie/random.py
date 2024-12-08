@@ -1,7 +1,6 @@
-
 #Name: Daniel Lin
 #Course Code: ICS3U1
-#Code Description: Treasure hunt game
+#Code Description: Treasure hunt game(Cops and Robbers edition)
 #Due Date: December 6th 2024
 from pygame import *
 import random
@@ -13,6 +12,11 @@ char_forward = image.load("C:\\Users\\Daniel\\PycharmProjects\\pythonProject\\sp
 char_left = image.load("C:\\Users\\Daniel\\PycharmProjects\\pythonProject\\sprites\\image (3) (1) (1) (1)\\image (3) (1) (1).png")
 char_right = image.load("C:\\Users\\Daniel\\PycharmProjects\\pythonProject\\sprites\\image (3) (1) (1) (1)\\image (3) (1) (1) (1).png")
 char_back = image.load("C:\\Users\\Daniel\\PycharmProjects\\pythonProject\\sprites\\image (3) (1) (1) (1)\\image (1) (1).png")
+
+robber_forward = image.load("C:\\Users\\Daniel\\PycharmProjects\\pythonProject\\sprites\\image (3) (1) (1) (1)\\robber_forward.png")
+robber_left = image.load("C:\\Users\\Daniel\\PycharmProjects\\pythonProject\\sprites\\image (3) (1) (1) (1)\\robber_left.png")
+robber_right = image.load("C:\\Users\\Daniel\\PycharmProjects\\pythonProject\\sprites\\image (3) (1) (1) (1)\\robber_right.png")
+robber_back = image.load("C:\\Users\\Daniel\\PycharmProjects\\pythonProject\\sprites\\image (3) (1) (1) (1)\\robber_backward.png")
 
 #Character sprites
 #char_forward = image.load("C:\\Users\\2linm\\PycharmProjects\\PythonProject\\pygame files\\image (1) (1)\\image (1).png")
@@ -26,6 +30,11 @@ char_left = transform.scale(char_left, (char_left.get_width() * 2, char_left.get
 char_right = transform.scale(char_right, (char_right.get_width() * 2, char_right.get_height() * 2))
 char_back = transform.scale(char_back, (char_back.get_width() * 2, char_back.get_height() * 2))
 
+robber_forward = transform.scale(robber_forward, (robber_forward.get_width() * 2, robber_forward.get_height() * 2))
+robber_left = transform.scale(robber_left, (robber_left.get_width() * 2, robber_left.get_height() * 2))
+robber_right = transform.scale(robber_right, (robber_right.get_width() * 2, robber_right.get_height() * 2))
+robber_back = transform.scale(robber_back, (robber_back.get_width() * 2, robber_back.get_height() * 2))
+
 #Backgrounds
 outdoor = image.load("C:\\Users\\Daniel\\PycharmProjects\\pythonProject\\sprites\\image (3) (1) (1) (1)\\Outdoor.png")
 hallway = image.load("C:\\Users\\Daniel\\PycharmProjects\\pythonProject\\sprites\\image (3) (1) (1) (1)\\Hallway.png")
@@ -36,6 +45,10 @@ bathroom = image.load("C:\\Users\\Daniel\\PycharmProjects\\pythonProject\\sprite
 dark_bathroom = image.load("C:\\Users\\Daniel\\PycharmProjects\\pythonProject\\sprites\\image (3) (1) (1) (1)\\Dark bathroom.png")
 Room1 = image.load("C:\\Users\\Daniel\\PycharmProjects\\pythonProject\\sprites\\image (3) (1) (1) (1)\\Room1.png")
 Room2 = image.load("C:\\Users\\Daniel\\PycharmProjects\\pythonProject\\sprites\\image (3) (1) (1) (1)\\Room2.png")
+win_screen = image.load("C:\\Users\\Daniel\\PycharmProjects\\pythonProject\\sprites\\image (3) (1) (1) (1)\\win screen.png")
+menu = image.load("C:\\Users\\Daniel\\PycharmProjects\\pythonProject\\sprites\\image (3) (1) (1) (1)\\Menu.png")
+player_selection = image.load("C:\\Users\\Daniel\\PycharmProjects\\pythonProject\\sprites\\image (3) (1) (1) (1)\\player selection.png")
+difficulty = image.load("C:\\Users\\Daniel\\PycharmProjects\\pythonProject\\sprites\\image (3) (1) (1) (1)\\difficulty.png")
 
 #Backgrounds
 #outdoor = image.load("C:\\Users\\2linm\\PycharmProjects\\PythonProject\\pygame files\\image (1) (1)\\Outdoor.png")
@@ -47,6 +60,13 @@ Room2 = image.load("C:\\Users\\Daniel\\PycharmProjects\\pythonProject\\sprites\\
 #dark_bathroom = image.load("C:\\Users\\2linm\\PycharmProjects\\PythonProject\\pygame files\\image (1) (1)\\Dark bathroom.png")
 #Room1 = image.load("C:\\Users\\2linm\\PycharmProjects\\PythonProject\\pygame files\\image (1) (1)\\Room1.png")
 #Room2 = image.load("C:\\Users\\2linm\\PycharmProjects\\PythonProject\\pygame files\\image (1) (1)\\Room2.png")
+
+#Inventory Items
+living_room_key_sprite = image.load("C:\\Users\\Daniel\\PycharmProjects\\pythonProject\\sprites\\image (3) (1) (1) (1)\\Living_room_key.png")
+kitchen_key_sprite = image.load("C:\\Users\\Daniel\\PycharmProjects\\pythonProject\\sprites\\image (3) (1) (1) (1)\\kitchen_key.png")
+dining_room_key_sprite = image.load("C:\\Users\\Daniel\\PycharmProjects\\pythonProject\\sprites\\image (3) (1) (1) (1)\\dining_key.png")
+flashlight_sprite = image.load("C:\\Users\\Daniel\\PycharmProjects\\pythonProject\\sprites\\image (3) (1) (1) (1)\\flashlight.png")
+room1_key_sprite = image.load("C:\\Users\\Daniel\\PycharmProjects\\pythonProject\\sprites\\image (3) (1) (1) (1)\\room1_key.png")
 
 #Inventory
 inventory = open("Inventory", "w").close()
@@ -67,10 +87,12 @@ KEY_UP = False
 KEY_DOWN = False
 
 #Character Sprites
-player_sprites = [char_forward, char_left, char_right, char_back]
+player_sprites = [char_forward, char_left, char_right, char_back, robber_forward, robber_left, robber_right, robber_back]
 
 #Initializing starting sprite
 player = player_sprites[0]
+#Initializing robber sprite
+player2 = player_sprites[4]
 
 #Initializing starting location
 player_x = 360
@@ -83,9 +105,10 @@ player_speed = 5
 player_collision = Rect(player_x, player_y, 64, 64)
 
 #Background list
-backgrounds = [outdoor, hallway, living_room, kitchen, dining_room, bathroom, dark_bathroom, Room1, Room2]
+backgrounds = [menu, player_selection, difficulty, outdoor, hallway, living_room, kitchen, dining_room, bathroom, dark_bathroom, Room1, Room2]
 
 backgrounds = backgrounds[0]
+
 
 #Door hit boxes
 house_door = Rect(320, 100, 120, 20)
@@ -104,6 +127,12 @@ hallway_B = Rect(310, 0, 80, 25)
 bathroom_H = Rect(360, 475, 100, 20)
 
 #Object hit boxes
+menu_play = Rect(300, 75, 190, 95)
+menu_player_selection = Rect(300, 180, 190, 110)
+difficulty_normal_request = Rect(170, 112, 160, 116)
+difficulty_hard_request = Rect(460, 112, 160, 116)
+player_selection_police = Rect(170, 112, 160, 116)
+player_selection_robber = Rect(460,112, 160, 116)
 house_rect = Rect(145, 0, 495, 95)
 tree1 = Rect(110, 175, 80, 80)
 tree2 = Rect(568, 155, 60, 78)
@@ -149,9 +178,27 @@ toilet_paper = Rect(330, 390, 60, 40)
 my_font = font.Font(None, 20)
 big_font = font.Font(None, 40)
 WHITE = (255, 255, 255)
+BLACK = (0, 0, 0)
+
+#Timers
+message_duration = 2000
+clue_time = 3000
+entrance_start_duration = 3000
+message_time = 0
+clue_start_time = 0
+entrance_2_start = 0
+key_time_H = 0
+key_time_L = 0
+key_time_K = 0
+flash_time = 0
+key_time_B = 0
+time_till_win = 0
+game_start_time = 0
+time_reset = 0
 
 #Interact text
 start_text = my_font.render("There's been some suspicious activity around the Howard house, best to investigate", True, WHITE)
+start_text_robber = my_font.render("The Howard's are on vacation, I heard they have some treasure, nows a better time than any", True, WHITE)
 my_text = my_font.render("Press E to interact", True, WHITE)
 entrance_text = my_font.render("Why is the front door unlocked?", True, WHITE)
 entrance_text_2 = my_font.render("All the doors are locked except for the second room to the left.", True, WHITE)
@@ -162,6 +209,14 @@ key_K = my_font.render("YOU FOUND THE KEY TO THE DINING ROOM!", True, WHITE)
 flashlight = my_font.render("YOU FOUND THE FLASHLIGHT, USE IT IN THE BATHROOM!", True, WHITE)
 key_B = my_font.render("YOU FOUND THE KEY TO THE ROOM!", True, WHITE)
 dark = big_font.render("IT IS TOO DARK TO SEE ANYTHING", True, WHITE)
+arrest = my_font.render("FREEZE, YOU ARE UNDER ARREST", True, WHITE)
+find_treasure = big_font.render("I'M GONNA BE RICH", True, WHITE)
+play_request = big_font.render("PLAY", True, BLACK)
+player_request = big_font.render("PLAYER", True, BLACK)
+normal_difficulty = big_font.render("NORMAL", True, BLACK)
+hard_difficulty = big_font.render("HARD", True, BLACK)
+police_request = big_font.render("POLICE", True, BLACK)
+robber_request = big_font.render("ROBBER", True, BLACK)
 
 #Random clue
 entrance_random = random.randint(1, 2)
@@ -184,18 +239,10 @@ bathroom_clue_1 = my_font.render("The toilet paper says \"Room keys are under to
 bathroom_clue_2 = my_font.render("The toilet paper says \"Room keys are in the human waste receptacle\"", True, WHITE)
 Clue_list = [entrance_clue_1, entrance_clue_2, living_clue_1, living_clue_2, living_clue_3, kitchen_clue_1, kitchen_clue_2, dining_clue_1, dining_clue_2, bathroom_clue_1, bathroom_clue_2]
             #  0                1                  2             3                  4           5              6                 7             8              9                 10
-#Timers
-message_duration = 2000
-clue_time = 3000
-entrance_start_duration = 3000
-message_time = 0
-clue_start_time = 0
-entrance_2_start = 0
-key_time_H = 0
-key_time_L = 0
-key_time_K = 0
-flash_time = 0
-key_time_B = 0
+
+#Win screen text
+win_text = big_font.render("YOU WIN", True, WHITE)
+score_text = big_font.render("SCORE", True, WHITE)
 
 #Text states
 display_text = False
@@ -205,14 +252,82 @@ show_clue_K = False
 show_clue_D = False
 show_clue_B = False
 
-def drawScreen():
-    global message_time, display_text, display_text_2, clue_start_time, key_time_B, key_time_H, key_time_L, key_time_K, flash_time, entrance_2_start, entrance_start_duration
-    screen.blit(backgrounds, (0, 0))
+#Inventory states
+inv_key_L = False
+inv_key_K = False
+inv_key_D = False
+inv_flash = False
+inv_key_R = False
 
-    # Outdoor
+#Win state
+win = False
+
+#Difficulty
+normal = False
+Hard = False
+
+#Character
+police = False
+robber = False
+
+#Score initialization
+keep_score = 5000
+
+#Initializing mouse position
+mx, my = 0, 0
+
+#Buffer between difficulty and player selection
+buffer = False
+
+high_score = 0
+high_score_w = open("Highscore", "w")
+high_score_w.write(str(high_score))
+high_score_w.close()
+
+def drawScreen():
+    global message_time, display_text, display_text_2, clue_start_time, key_time_B, key_time_H, key_time_L, key_time_K, flash_time, entrance_2_start, entrance_start_duration, win, time_till_win, keep_score, game_start_time
+    screen.blit(backgrounds, (0, 0))
+    #Current time
+    if backgrounds != menu and backgrounds != win_screen and backgrounds != player_selection and backgrounds != difficulty:
+        screen.blit(current_time, (10, 20))
+    #Show inventory
+    if backgrounds != win_screen and backgrounds != menu and backgrounds != difficulty and backgrounds != player_selection:
+        if inv_key_L:
+            keep_score += 100
+            screen.blit(living_room_key_sprite, (678, 5))
+        if inv_key_K:
+            keep_score += 100
+            screen.blit(kitchen_key_sprite, (724, 5))
+        if inv_key_D:
+            keep_score += 100
+            screen.blit(dining_room_key_sprite, (764, 5))
+        if inv_flash:
+            keep_score += 100
+            screen.blit(flashlight_sprite, (678, 50))
+        if inv_key_R:
+            keep_score += 100
+            screen.blit(room1_key_sprite, (724, 50))
+
+    #Menu
+    if backgrounds == menu:
+        screen.blit(play_request, (365, 105))
+    if backgrounds == difficulty:
+        screen.blit(normal_difficulty, (193, 160))
+        screen.blit(hard_difficulty, (496, 160))
+    if backgrounds == player_selection:
+        screen.blit(police_request, (201, 160))
+        screen.blit(robber_request, (479, 160))
+
+    #Outdoor
     if backgrounds == outdoor:
-        screen.blit(start_text, (130, 470))
-        screen.blit(player, (player_x, player_y))
+        if game_start_time == 0:
+            game_start_time = time.get_ticks()
+        if police:
+            screen.blit(start_text, (130, 470))
+            screen.blit(player, (player_x, player_y))
+        if robber:
+            screen.blit(start_text_robber, (120, 470))
+            screen.blit(player2, (player_x, player_y))
         if player_collision.colliderect(house_door):
             screen.blit(my_text, (340, 100))
 
@@ -231,12 +346,14 @@ def drawScreen():
             #Clue 1
             if entrance_random == 1:
                 if time.get_ticks() - clue_start_time < clue_time:
-                    screen.blit(Clue_list[0], (190, 460))
+                    if normal:
+                        screen.blit(Clue_list[0], (190, 460))
 
             #Clue 2
             if entrance_random == 2:
                 if time.get_ticks() - clue_start_time < clue_time:
-                    screen.blit(Clue_list[1], (285, 460))
+                    if normal:
+                        screen.blit(Clue_list[1], (285, 460))
 
         if display_text and not display_text_2:
             if time.get_ticks() - clue_start_time > clue_time:
@@ -256,8 +373,10 @@ def drawScreen():
                     break
                 if time.get_ticks() - key_time_H < message_duration:
                     screen.blit(key_L, (255, 180))
-
-        screen.blit(player, (player_x, player_y))
+        if police:
+            screen.blit(player, (player_x, player_y))
+        if robber:
+            screen.blit(player2, (player_x, player_y))
         if player_collision.colliderect(hallway_L):
             screen.blit(my_text, (185, 300))
         elif player_collision.colliderect(house_door_H):
@@ -275,7 +394,10 @@ def drawScreen():
 
     #Living Room
     if backgrounds == living_room:
-        screen.blit(player, (player_x, player_y))
+        if police:
+            screen.blit(player, (player_x, player_y))
+        if robber:
+            screen.blit(player2, (player_x, player_y))
         if player_collision.colliderect(living_room_door_H):
             screen.blit(my_text, (660, 315))
         if player_collision.colliderect(living_room_door_K):
@@ -288,9 +410,9 @@ def drawScreen():
             screen.blit(my_text, (350, 260))
         if player_collision.colliderect(carpet_L):
             screen.blit(my_text, (350, 200))
-        if show_clue_L:
-            screen.blit(Clue_list[living_random], (250, 150))
-
+        if normal:
+            if show_clue_L:
+                screen.blit(Clue_list[living_random], (250, 150))
         content = open("Inventory", "r")
         for line in content:
             if "kitchen_key" in line:
@@ -302,7 +424,10 @@ def drawScreen():
                     screen.blit(key_H, (280, 180))
     #Kitchen
     if backgrounds == kitchen:
-        screen.blit(player, (player_x, player_y))
+        if police:
+            screen.blit(player, (player_x, player_y))
+        if robber:
+            screen.blit(player2, (player_x, player_y))
         if player_collision.colliderect(kitchen_L):
             screen.blit(my_text, (100, 470))
         if player_collision.colliderect(kitchen_D):
@@ -313,8 +438,9 @@ def drawScreen():
             screen.blit(my_text, (360, 100))
         if player_collision.colliderect(fruits):
             screen.blit(my_text, (270, 360))
-        if show_clue_K:
-            screen.blit(Clue_list[kitchen_random], (95, 130))
+        if normal:
+            if show_clue_K:
+                screen.blit(Clue_list[kitchen_random], (95, 130))
         content = open("Inventory", "r")
         for line in content:
             if "dining_key" in line:
@@ -327,7 +453,10 @@ def drawScreen():
 
     #Dining Room
     if backgrounds == dining_room:
-        screen.blit(player, (player_x, player_y))
+        if police:
+            screen.blit(player, (player_x, player_y))
+        if robber:
+            screen.blit(player2, (player_x, player_y))
         if player_collision.colliderect(dining_room_K):
             screen.blit(my_text, (75, 460))
         if player_collision.colliderect(painting):
@@ -336,8 +465,9 @@ def drawScreen():
             screen.blit(my_text, (5, 10))
         if player_collision.colliderect(food):
             screen.blit(my_text, (200, 200))
-        if show_clue_D:
-            screen.blit(Clue_list[dining_random], (10, 250))
+        if normal:
+            if show_clue_D:
+                screen.blit(Clue_list[dining_random], (10, 250))
         content = open("Inventory", "r")
         for line in content:
             if "flashlight" in line:
@@ -350,20 +480,45 @@ def drawScreen():
 
     #Room2
     if backgrounds == Room2:
-        screen.blit(player, (player_x, player_y))
+        if police:
+            screen.blit(player, (player_x, player_y))
+        if robber:
+            screen.blit(player2, (player_x, player_y))
         screen.blit(room2_text, (250, 300))
         if player_collision.colliderect(Room2_H):
             screen.blit(my_text, (680, 150))
 
     #Room1
     if backgrounds == Room1:
-        screen.blit(player, (player_x, player_y))
+        if police:
+            screen.blit(player, (player_x, player_y))
+        if robber:
+            screen.blit(player2, (player_x, player_y))
+        if police:
+            screen.blit(player_sprites[5], (110, 200))
+        if time_till_win == 0:
+            time_till_win = time.get_ticks()
+        if police:
+            if time.get_ticks() - time_till_win < message_duration:
+                screen.blit(arrest, (320, 225))
+            else:
+                win = True
+        if robber:
+            if time.get_ticks() - time_till_win < message_duration:
+                screen.blit(find_treasure, (220, 250))
+            else:
+                win = True
         if player_collision.colliderect(Room1_H):
             screen.blit(my_text, (680, 150))
 
+
+
     #Bathroom
     if backgrounds == bathroom:
-        screen.blit(player, (player_x, player_y))
+        if police:
+            screen.blit(player, (player_x, player_y))
+        if robber:
+            screen.blit(player2, (player_x, player_y))
         if player_collision.colliderect(bathroom_H):
             screen.blit(my_text, (330, 460))
         if player_collision.colliderect(toilet_B):
@@ -372,8 +527,9 @@ def drawScreen():
             screen.blit(my_text, (440, 200))
         if player_collision.colliderect(toilet_paper):
             screen.blit(my_text, (360, 380))
-        if show_clue_B:
-            screen.blit(Clue_list[bathroom_random], (300, 360))
+        if normal:
+            if show_clue_B:
+                screen.blit(Clue_list[bathroom_random], (300, 360))
         content = open("Inventory", "r")
         for line in content:
             if "room1_key" in line:
@@ -388,6 +544,13 @@ def drawScreen():
     if backgrounds == dark_bathroom:
         screen.blit(dark, (180, 220))
         screen.blit(my_text, (340, 400))
+
+    #Win Screen
+    if backgrounds == win_screen:
+        screen.blit(win_text, (360, 40))
+        screen.blit(score_text, (370, 140))
+        screen.blit(score_num, (400, 188))
+        screen.blit(my_text, (367, 360))
     display.flip()
 
 #Initializing clock
@@ -396,9 +559,65 @@ myClock = time.Clock()
 running = True
 
 while running:
+    #Time tracker
+    if backgrounds != win_screen:
+        timer = (time.get_ticks() - game_start_time) / 1000
+        current_time = my_font.render(str(timer), True, WHITE)
+    # Win screen
+    if win:
+        backgrounds = win_screen
+    #Score keeping
+    elapsed_time = (time.get_ticks() - game_start_time) // 1000
+    if backgrounds != win_screen:
+        keep_score = 5000 - (elapsed_time * 10)
+    if keep_score < 0:
+        keep_score = 0
+    if backgrounds == win_screen:
+        score_w = open("Score", "w")
+        score_w.write(str(keep_score))
+        score_w.close()
+        score_file = open("Score", "r")
+        score = score_file.read().strip()
+        new_high_score = int(score)
+        high_score_r = open("Highscore", "r")
+        if new_high_score > int(high_score_r.read()):
+            high_score = new_high_score
+        high_score_r.close()
+        score_num = my_font.render(str(score), True, WHITE)
     for evnt in event.get():
         if evnt.type == QUIT:
             running = False
+        # Mouse location
+        if evnt.type == MOUSEBUTTONDOWN:
+            mx, my = evnt.pos
+            #Menu
+            if backgrounds == menu:
+                if menu_play.collidepoint(mx, my):
+                    backgrounds = difficulty
+            #Difficulty selection
+            if backgrounds == difficulty:
+                if difficulty_normal_request.collidepoint(mx, my):
+                    normal = True
+                    backgrounds = player_selection
+                    buffer = True
+                if difficulty_hard_request.collidepoint(mx, my):
+                    hard = True
+                    backgrounds = player_selection
+                    buffer = True
+
+            if backgrounds == player_selection:
+                if buffer:
+                    buffer = False
+                else:
+                    if player_selection_police.collidepoint(mx, my):
+                        police = True
+                        backgrounds = outdoor
+                    elif player_selection_robber.collidepoint(mx, my):
+                        robber = True
+                        backgrounds = outdoor
+
+        if evnt.type == MOUSEMOTION:
+            mx, my = evnt.pos
         #Initializing key down
         if evnt.type == KEYDOWN:
             if evnt.key == K_LEFT:
@@ -410,18 +629,24 @@ while running:
             if evnt.key == K_DOWN:
                 KEY_DOWN = True
             if evnt.key == K_e:
-            #Room changing and interaction
+                # Room changing and interaction
                 #Outdoor
                 if backgrounds == outdoor and player_collision.colliderect(house_door):
                     player_x = 360
                     player_y = 430
-                    player = player_sprites[3]
+                    if police:
+                        player = player_sprites[3]
+                    if robber:
+                        player2 = player_sprites[7]
                     backgrounds = hallway
                 #Hallway
                 elif backgrounds == hallway and player_collision.colliderect(house_door_H):
                     player_x = 360
                     player_y = 120
-                    player = player_sprites[0]
+                    if police:
+                        player = player_sprites[0]
+                    if robber:
+                        player2 = player_sprites[4]
                     backgrounds = outdoor
                 elif entrance_random == 1 and backgrounds == hallway and player_collision.colliderect(carpet_H):
                     if "living_room_key" not in current_inventory:
@@ -441,7 +666,10 @@ while running:
                         if "living_room_key" in line:
                             player_x = 740
                             player_y = 340
-                            player = player_sprites[1]
+                            if police:
+                                player = player_sprites[1]
+                            if robber:
+                                player2 = player_sprites[5]
                             backgrounds = living_room
                             content.close()
                             break
@@ -449,17 +677,26 @@ while running:
                 elif backgrounds == hallway and player_collision.colliderect(hallway_R2):
                     player_x = 735
                     player_y = 210
-                    player = player_sprites[1]
+                    if police:
+                        player = player_sprites[1]
+                    if robber:
+                        player2 = player_sprites[5]
                     backgrounds = Room2
                 elif "room1_key" in current_inventory and backgrounds == hallway and player_collision.colliderect(hallway_R1):
                     player_x = 735
                     player_y = 210
-                    player = player_sprites[1]
+                    if police:
+                        player = player_sprites[1]
+                    if robber:
+                        player2 = player_sprites[5]
                     backgrounds = Room1
                 elif backgrounds == hallway and player_collision.colliderect(hallway_B) and "flashlight" in current_inventory:
                     player_x = 380
                     player_y = 426
-                    player = player_sprites[3]
+                    if police:
+                        player = player_sprites[3]
+                    if robber:
+                        player2 = player_sprites[7]
                     backgrounds = bathroom
                 elif backgrounds == hallway and player_collision.colliderect(hallway_B) and "flashlight" not in current_inventory:
                     backgrounds = dark_bathroom
@@ -468,7 +705,10 @@ while running:
                 elif backgrounds == living_room and player_collision.colliderect(living_room_door_H):
                     player_x = 235
                     player_y = 340
-                    player = player_sprites[2]
+                    if police:
+                        player = player_sprites[2]
+                    if robber:
+                        player2 = player_sprites[6]
                     backgrounds = hallway
                 elif backgrounds == living_room and player_collision.colliderect(living_room_door_K):
                     content = open("Inventory", "r")
@@ -476,7 +716,10 @@ while running:
                         if "kitchen_key" in line:
                             player_x = 125
                             player_y = 430
-                            player = player_sprites[3]
+                            if police:
+                                player = player_sprites[3]
+                            if robber:
+                                player2 = player_sprites[7]
                             backgrounds = kitchen
                             content.close()
                             break
@@ -503,7 +746,10 @@ while running:
                 elif backgrounds == kitchen and player_collision.colliderect(kitchen_L):
                     player_x = 110
                     player_y = 10
-                    player = player_sprites[0]
+                    if police:
+                        player = player_sprites[0]
+                    if robber:
+                        player2 = player_sprites[4]
                     backgrounds = living_room
                 elif backgrounds == kitchen and player_collision.colliderect(kitchen_D):
                     content = open("Inventory", "r")
@@ -511,7 +757,10 @@ while running:
                         if "dining_key" in line:
                             player_x = 110
                             player_y = 432
-                            player = player_sprites[3]
+                            if police:
+                                player = player_sprites[3]
+                            if robber:
+                                player2 = player_sprites[7]
                             backgrounds = dining_room
                             content.close()
                             break
@@ -532,7 +781,10 @@ while running:
                 elif backgrounds == dining_room and player_collision.colliderect(dining_room_K):
                     player_x = 140
                     player_y = 10
-                    player = player_sprites[0]
+                    if police:
+                        player = player_sprites[0]
+                    if robber:
+                        player = player_sprites[4]
                     backgrounds = kitchen
                 elif dining_random == 7 and backgrounds == dining_room and player_collision.colliderect(dog_food):
                     if "flashlight" not in current_inventory:
@@ -551,21 +803,30 @@ while running:
                 elif backgrounds == Room2 and player_collision.colliderect(Room2_H):
                     player_x = 232
                     player_y = 190
-                    player = player_sprites[2]
+                    if police:
+                        player = player_sprites[2]
+                    if robber:
+                        player2 = player_sprites[6]
                     backgrounds = hallway
 
                 #Room1
                 elif backgrounds == Room1 and player_collision.colliderect(Room1_H):
                     player_x = 232
                     player_y = 75
-                    player = player_sprites[2]
+                    if police:
+                        player = player_sprites[2]
+                    if robber:
+                        player2 = player_sprites[6]
                     backgrounds = hallway
 
                 #Bathroom
                 elif backgrounds == bathroom and player_collision.colliderect(bathroom_H):
                     player_x = 305
                     player_y = 15
-                    player = player_sprites[0]
+                    if police:
+                        player = player_sprites[0]
+                    if robber:
+                        player2 = [4]
                     backgrounds = hallway
 
                 elif bathroom_random == 9 and backgrounds == bathroom and player_collision.colliderect(bath_tub):
@@ -585,8 +846,42 @@ while running:
                 elif backgrounds == dark_bathroom:
                     player_x = 305
                     player_y = 15
-                    player = player_sprites[0]
+                    if police:
+                        player = player_sprites[0]
+                    if robber:
+                        player2 = player_sprites[4]
                     backgrounds = hallway
+
+                elif backgrounds == win_screen:
+                    open("Inventory", "w").close()
+                    open("Score", "w").close()
+                    buffer = False
+                    win = False
+                    message_time = 0
+                    clue_start_time = 0
+                    entrance_2_start = 0
+                    key_time_H = 0
+                    key_time_L = 0
+                    key_time_K = 0
+                    flash_time = 0
+                    key_time_B = 0
+                    time_till_win = 0
+                    game_start_time = 0
+                    time_reset = 0
+                    player_x = 360
+                    player_y = 400
+                    normal = False
+                    hard = False
+                    police = False
+                    robber = False
+                    inv_key_L = False
+                    inv_key_K = False
+                    inv_key_D = False
+                    inv_flash = False
+                    inv_key_R = False
+                    current_inventory = []
+                    backgrounds = menu
+
 
         #Initializing key up
         if evnt.type == KEYUP:
@@ -630,201 +925,291 @@ while running:
                     else:
                         show_clue_B = False
 
+        #Inventory state change
+        content = open("Inventory", "r")
+        for line in content:
+            if "living_room_key" in line:
+                inv_key_L = True
+            if "kitchen_key" in line:
+                inv_key_K = True
+            if "dining_key" in line:
+                inv_key_D = True
+            if "flashlight" in line:
+                inv_flash = True
+            if "room1_key" in line:
+                inv_key_R = True
+        content.close()
+
     # Updating player collision
     player_collision = Rect(player_x, player_y, 64, 64)
 
     if KEY_LEFT:
-        player = player_sprites[1]
+        if police:
+            player = player_sprites[1]
+        if robber:
+            player2 = player_sprites[5]
         predicted_collision = player_collision.move(-player_speed * 1.5, 0)
 
         #Outdoor
         if backgrounds == outdoor:
             if not predicted_collision.colliderect(house_rect) and not predicted_collision.colliderect(tree1) and not predicted_collision.colliderect(tree2) and player_x >= -10:
+                if police:
                     player = player_sprites[1]
-                    player_x -= player_speed
+                if robber:
+                    player2 = player_sprites[5]
+                player_x -= player_speed
 
         #Hallway
         elif backgrounds == hallway:
             if not predicted_collision.colliderect(drawer_H) and player_x >= 230:
-                player = player_sprites[1]
+                if police:
+                    player = player_sprites[1]
+                if robber:
+                    player2 = player_sprites[5]
                 player_x -= player_speed
 
         #Living Room
         elif backgrounds == living_room:
             if not predicted_collision.colliderect(bookshelf_L) and not predicted_collision.colliderect(couch) and not predicted_collision.colliderect(chip_table) and not predicted_collision.colliderect(TV) and player_x >= -10:
-                player = player_sprites[1]
+                if police:
+                    player = player_sprites[1]
+                if robber:
+                    player2 = player_sprites[5]
                 player_x -= player_speed
 
         #Kitchen
         elif backgrounds == kitchen and not predicted_collision.colliderect(kitchen_table_1) and not predicted_collision.colliderect(kitchen_table_2) and not predicted_collision.colliderect(kitchen_table_3_1) and not predicted_collision.colliderect(kitchen_table_3_2) and not predicted_collision.colliderect(garbage) and player_x >= -10:
-            player = player_sprites[1]
+            if police:
+                player = player_sprites[1]
+            if robber:
+                player2 = player_sprites[5]
             player_x -= player_speed
 
         #Dining Room
         elif backgrounds == dining_room and not predicted_collision.colliderect(dining_table) and player_x >= -10:
-            player = player_sprites[1]
+            if police:
+                player = player_sprites[1]
+            if robber:
+                player2 = player_sprites[5]
             player_x -= player_speed
 
         #Room2
         elif backgrounds == Room2 and not predicted_collision.colliderect(room2_table) and not predicted_collision.colliderect(room2_drawer) and not predicted_collision.colliderect(room2_bookshelf) and player_x >= -10:
-            player = player_sprites[1]
+            if police:
+                player = player_sprites[1]
+            if robber:
+                player2 = player_sprites[5]
             player_x -= player_speed
 
         #Room1
         elif backgrounds == Room1 and not predicted_collision.colliderect(room1_table) and not predicted_collision.colliderect(room1_drawer) and not predicted_collision.colliderect(treasure) and player_x >= -10:
-            player = player_sprites[1]
+            if police:
+                player = player_sprites[1]
+            if robber:
+                player2 = player_sprites[5]
             player_x -= player_speed
 
         #Bathroom
         elif backgrounds == bathroom and not predicted_collision.colliderect(sink) and not predicted_collision.colliderect(bathtub) and not predicted_collision.colliderect(toilet) and player_x >= 173:
-            player = player_sprites[1]
+            if police:
+                player = player_sprites[1]
+            if robber:
+                player2 = player_sprites[5]
             player_x -= player_speed
 
-
     if KEY_RIGHT:
-        player = player_sprites[2]
+        if police:
+            player = player_sprites[2]
+        if robber:
+            player2 = player_sprites[6]
         predicted_collision = player_collision.move(player_speed, 0)
 
         #Outdoor
         if backgrounds == outdoor:
             if not predicted_collision.colliderect(house_rect) and not predicted_collision.colliderect(tree1) and not predicted_collision.colliderect(tree2) and player_x <= 745:
-                player = player_sprites[2]
+                if police:
+                    player = player_sprites[2]
+                if robber:
+                    player2 = player_sprites[6]
                 player_x += player_speed
 
         #Hallway
         elif backgrounds == hallway:
             if not predicted_collision.colliderect(drawer_H) and player_x <= 500:
-                player = player_sprites[2]
+                if police:
+                    player = player_sprites[2]
+                if robber:
+                    player2 = player_sprites[6]
                 player_x += player_speed
 
         #Living Room
         elif backgrounds == living_room:
             if not predicted_collision.colliderect(bookshelf_L) and not predicted_collision.colliderect(couch) and not predicted_collision.colliderect(chip_table) and not predicted_collision.colliderect(TV) and player_x <= 740:
-                player = player_sprites[2]
+                if police:
+                    player = player_sprites[2]
+                if robber:
+                    player2 = player_sprites[6]
                 player_x += player_speed
 
         #Kitchen
         elif backgrounds == kitchen and not predicted_collision.colliderect(kitchen_table_1) and not predicted_collision.colliderect(kitchen_table_2) and not predicted_collision.colliderect(kitchen_table_3_1) and not predicted_collision.colliderect(kitchen_table_3_2) and not predicted_collision.colliderect(garbage) and player_x <= 740:
-            player = player_sprites[2]
+            if police:
+                player = player_sprites[2]
+            if robber:
+                player2 = player_sprites[6]
             player_x += player_speed
 
         #Dining Room
         elif backgrounds == dining_room and not predicted_collision.colliderect(dining_table) and player_x <= 740:
-            player = player_sprites[2]
+            if police:
+                player = player_sprites[2]
+            if robber:
+                player2 = player_sprites[6]
             player_x += player_speed
 
         #Room2
         elif backgrounds == Room2 and not predicted_collision.colliderect(room2_table) and not predicted_collision.colliderect(room2_drawer) and not predicted_collision.colliderect(room2_bookshelf) and player_x <= 740:
-            player = player_sprites[2]
+            if police:
+                player = player_sprites[2]
+            if robber:
+                player2 = player_sprites[6]
             player_x += player_speed
 
         #Room1
         elif backgrounds == Room1 and not predicted_collision.colliderect(room1_table) and not predicted_collision.colliderect(room1_drawer) and not predicted_collision.colliderect(treasure) and player_x <= 740:
-            player = player_sprites[2]
+            if police:
+                player = player_sprites[2]
+            if robber:
+                player2 = player_sprites[6]
             player_x += player_speed
 
         #Bathroom
         elif backgrounds == bathroom and not predicted_collision.colliderect(sink) and not predicted_collision.colliderect(bathtub) and not predicted_collision.colliderect(toilet) and player_x <= 585:
-            player = player_sprites[2]
+            if police:
+                player = player_sprites[2]
+            if robber:
+                player2 = player_sprites[6]
             player_x += player_speed
 
 
     if KEY_UP:
-        player = player_sprites[3]
+        if police:
+            player = player_sprites[3]
+        if robber:
+            player2 = player_sprites[7]
         predicted_collision = player_collision.move(0, -player_speed * 1.7)
 
         #Outdoor
         if backgrounds == outdoor:
             if not predicted_collision.colliderect(house_rect) and not predicted_collision.colliderect(tree1) and not predicted_collision.colliderect(tree2) and player_y >= 0:
-                player = player_sprites[3]
+                if police:
+                    player = player_sprites[3]
+                if robber:
+                    player2 = player_sprites[7]
                 player_y -= player_speed
 
         #Hallway
         elif backgrounds == hallway:
             if not predicted_collision.colliderect(drawer_H) and player_y >= 5:
-                player = player_sprites[3]
+                if police:
+                    player = player_sprites[3]
+                if robber:
+                    player2 = player_sprites[7]
                 player_y -= player_speed
 
         #Living Room
         elif backgrounds == living_room:
             if not predicted_collision.colliderect(bookshelf_L) and not predicted_collision.colliderect(couch) and not predicted_collision.colliderect(chip_table) and not predicted_collision.colliderect(TV) and player_y >= 5:
-                player = player_sprites[3]
+                if police:
+                    player = player_sprites[3]
+                if robber:
+                    player2 = player_sprites[7]
                 player_y -= player_speed
 
         #Kitchen
         elif backgrounds == kitchen and not predicted_collision.colliderect(kitchen_table_1) and not predicted_collision.colliderect(kitchen_table_2) and not predicted_collision.colliderect(kitchen_table_3_1) and not predicted_collision.colliderect(kitchen_table_3_2) and not predicted_collision.colliderect(garbage) and player_y >= 5:
-            player = player_sprites[3]
+            if police:
+                player = player_sprites[3]
+            if robber:
+                player2 = player_sprites[7]
             player_y -= player_speed
 
         #Dining Room
         elif backgrounds == dining_room and not predicted_collision.colliderect(dining_table) and player_y >= 5:
-            player = player_sprites[3]
+            if police:
+                player = player_sprites[3]
+            if robber:
+                player2 = player_sprites[7]
             player_y -= player_speed
 
         #Room2
         elif backgrounds == Room2 and not predicted_collision.colliderect(room2_table) and not predicted_collision.colliderect(room2_drawer) and not predicted_collision.colliderect(room2_bookshelf) and player_y >= 5:
-            player = player_sprites[3]
+            if police:
+                player = player_sprites[3]
+            if robber:
+                player2 = player_sprites[7]
             player_y -= player_speed
 
         #Room1
         elif backgrounds == Room1 and not predicted_collision.colliderect(room1_table) and not predicted_collision.colliderect(room1_drawer) and not predicted_collision.colliderect(treasure) and player_y >= 5:
-            player = player_sprites[3]
+            if police:
+                player = player_sprites[3]
+            if robber:
+                player2 = player_sprites[7]
             player_y -= player_speed
 
         #Bathroom
         elif backgrounds == bathroom and not predicted_collision.colliderect(sink) and not predicted_collision.colliderect(bathtub) and not predicted_collision.colliderect(toilet) and player_y >= 5:
-            player = player_sprites[3]
+            if police:
+                player = player_sprites[3]
+            if robber:
+                player2 = player_sprites[7]
             player_y -= player_speed
 
     if KEY_DOWN:
-        player = player_sprites[0]
+        if police:
+            player = player_sprites[0]
+        if robber:
+            player2 = player_sprites[4]
         predicted_collision = player_collision.move(0, player_speed)
 
         #Outdoor
         if backgrounds == outdoor:
             if not predicted_collision.colliderect(house_rect) and not predicted_collision.colliderect(tree1) and not predicted_collision.colliderect(tree2) and player_y <= 430:
-               player = player_sprites[0]
-               player_y += player_speed
+                player_y += player_speed
 
         #Hallway
         elif backgrounds == hallway and player_y <= 426:
             if not predicted_collision.colliderect(drawer_H) and player_y <= 426:
-                player = player_sprites[0]
                 player_y += player_speed
 
         #Living Room
         elif backgrounds == living_room and player_y <= 426:
             if not predicted_collision.colliderect(bookshelf_L) and not predicted_collision.colliderect(couch) and not predicted_collision.colliderect(chip_table) and not predicted_collision.colliderect(TV) and player_y <= 426:
-                player = player_sprites[0]
                 player_y += player_speed
 
         #Kitchen
         elif backgrounds == kitchen and not predicted_collision.colliderect(kitchen_table_1) and not predicted_collision.colliderect(kitchen_table_2) and not predicted_collision.colliderect(kitchen_table_3_1) and not predicted_collision.colliderect(kitchen_table_3_2) and not predicted_collision.colliderect(garbage) and player_y <= 426:
-            player = player_sprites[0]
             player_y += player_speed
 
         #Dining Room
         elif backgrounds == dining_room and not predicted_collision.colliderect(dining_table) and player_y <= 426:
-            player = player_sprites[0]
             player_y += player_speed
 
         #Room2
         elif backgrounds == Room2 and not predicted_collision.colliderect(room2_table) and not predicted_collision.colliderect(room2_drawer) and not predicted_collision.colliderect(room2_bookshelf) and player_y <= 426:
-            player = player_sprites[0]
             player_y += player_speed
 
         #Room1
         elif backgrounds == Room1 and not predicted_collision.colliderect(room1_table) and not predicted_collision.colliderect(room1_drawer) and not predicted_collision.colliderect(treasure) and player_y <= 426:
-            player = player_sprites[0]
             player_y += player_speed
 
         #Bathroom
         elif backgrounds == bathroom and not predicted_collision.colliderect(sink) and not predicted_collision.colliderect(bathtub) and not predicted_collision.colliderect(toilet) and player_y <= 426:
-            player = player_sprites[0]
             player_y += player_speed
 
     drawScreen()
     display.flip()
     myClock.tick(60)
-
+score = open("Score", "w").close()
 quit()
