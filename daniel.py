@@ -205,6 +205,7 @@ my_text = my_font.render("Press E to interact", True, WHITE)
 entrance_text = my_font.render("Why is the front door unlocked?", True, WHITE)
 entrance_text_2 = my_font.render("All the doors are locked except for the second room to the left.", True, WHITE)
 room2_text = my_font.render("Everything looks rummaged through, there must be an intruder!", True, WHITE)
+room2_text_robber = my_font.render("Someone has already rummaged through this room, I hope they haven't gotten the treasure yet", True, WHITE)
 key_L = my_font.render("YOU FOUND THE KEY TO THE LIVING ROOM!", True, WHITE)
 key_H = my_font.render("YOU FOUND THE KEY TO THE KITCHEN!", True, WHITE)
 key_K = my_font.render("YOU FOUND THE KEY TO THE DINING ROOM!", True, WHITE)
@@ -544,9 +545,10 @@ def drawScreen():
     if backgrounds == Room2:
         if police:
             screen.blit(player, (player_x, player_y))
+            screen.blit(room2_text, (250, 300))
         if robber:
             screen.blit(player2, (player_x, player_y))
-        screen.blit(room2_text, (250, 300))
+            screen.blit(room2_text_robber, (230, 300))
         if player_collision.colliderect(Room2_H):
             screen.blit(my_text, (680, 150))
 
