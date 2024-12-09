@@ -46,6 +46,7 @@ dark_bathroom = image.load("C:\\Users\\Daniel\\PycharmProjects\\pythonProject\\s
 Room1 = image.load("C:\\Users\\Daniel\\PycharmProjects\\pythonProject\\sprites\\image (3) (1) (1) (1)\\Room1.png")
 Room2 = image.load("C:\\Users\\Daniel\\PycharmProjects\\pythonProject\\sprites\\image (3) (1) (1) (1)\\Room2.png")
 win_screen = image.load("C:\\Users\\Daniel\\PycharmProjects\\pythonProject\\sprites\\image (3) (1) (1) (1)\\win screen.png")
+lose_screen = image.load("C:\\Users\\Daniel\\PycharmProjects\\pythonProject\\sprites\\image (3) (1) (1) (1)\\lose screen.png")
 menu = image.load("C:\\Users\\Daniel\\PycharmProjects\\pythonProject\\sprites\\image (3) (1) (1) (1)\\Menu.png")
 player_selection = image.load("C:\\Users\\Daniel\\PycharmProjects\\pythonProject\\sprites\\image (3) (1) (1) (1)\\player selection.png")
 difficulty = image.load("C:\\Users\\Daniel\\PycharmProjects\\pythonProject\\sprites\\image (3) (1) (1) (1)\\difficulty.png")
@@ -69,7 +70,8 @@ flashlight_sprite = image.load("C:\\Users\\Daniel\\PycharmProjects\\pythonProjec
 room1_key_sprite = image.load("C:\\Users\\Daniel\\PycharmProjects\\pythonProject\\sprites\\image (3) (1) (1) (1)\\room1_key.png")
 
 #Inventory
-inventory = open("Inventory", "w").close()
+open("Inventory", "w").close()
+open("Clues", "w").close()
 current_inventory = []
 
 info = display.Info()
@@ -237,12 +239,17 @@ dining_clue_1 = my_font.render("Why does the painting say \"The dog got the flas
 dining_clue_2 = my_font.render("Why does the painting say \"The flashlight is now yellow I guess\"?", True, WHITE)
 bathroom_clue_1 = my_font.render("The toilet paper says \"Room keys are under towels\"", True, WHITE)
 bathroom_clue_2 = my_font.render("The toilet paper says \"Room keys are in the human waste receptacle\"", True, WHITE)
+#Clues as strings for adding to Clues file
+Clue_texts = ["Hmm, the welcome mat is suspicious, why is it near the bathroom?", "Ah, the drawer looks tampered with!", "The paper says \"Not again, the key got stuff between the couch cushions again\"", "The paper says \"I left the kitchen key under the carpet\"", "The paper says \"I may have lost the kitchen key while eating chips, sorry\"", "The paper says \"I was grocery shopping, I lost the dining room key, could be in all the food\"", "The paper says \"The key disappeared while I was cleaning out the pipes\"", "Why does the painting say \"The dog got the flashlight\"?", "Why does the painting say \"The flashlight is now yellow I guess\"?", "The toilet paper says \"Room keys are under towels\"", "The toilet paper says \"Room keys are in the human waste receptacle\""]
 Clue_list = [entrance_clue_1, entrance_clue_2, living_clue_1, living_clue_2, living_clue_3, kitchen_clue_1, kitchen_clue_2, dining_clue_1, dining_clue_2, bathroom_clue_1, bathroom_clue_2]
             #  0                1                  2             3                  4           5              6                 7             8              9                 10
 
 #Win screen text
 win_text = big_font.render("YOU WIN", True, WHITE)
 score_text = big_font.render("SCORE", True, WHITE)
+
+#Lose screen text
+lose_text = big_font.render("YOU LOSE", True, WHITE)
 
 #Text states
 display_text = False
@@ -264,7 +271,7 @@ win = False
 
 #Difficulty
 normal = False
-Hard = False
+hard = False
 
 #Character
 police = False
@@ -288,10 +295,10 @@ def drawScreen():
     global message_time, display_text, display_text_2, clue_start_time, key_time_B, key_time_H, key_time_L, key_time_K, flash_time, entrance_2_start, entrance_start_duration, win, time_till_win, keep_score, game_start_time
     screen.blit(backgrounds, (0, 0))
     #Current time
-    if backgrounds != menu and backgrounds != win_screen and backgrounds != player_selection and backgrounds != difficulty:
+    if backgrounds != menu and backgrounds != win_screen and backgrounds != player_selection and backgrounds != difficulty and backgrounds != lose_screen:
         screen.blit(current_time, (10, 20))
     #Show inventory
-    if backgrounds != win_screen and backgrounds != menu and backgrounds != difficulty and backgrounds != player_selection:
+    if backgrounds != win_screen and backgrounds != menu and backgrounds != difficulty and backgrounds != player_selection and backgrounds != lose_screen:
         if inv_key_L:
             keep_score += 100
             screen.blit(living_room_key_sprite, (678, 5))
@@ -348,12 +355,34 @@ def drawScreen():
                 if time.get_ticks() - clue_start_time < clue_time:
                     if normal:
                         screen.blit(Clue_list[0], (190, 460))
+                        clue_r = open("Clues", "r")
+                        found_clue_H = False
+                        for line in clue_r:
+                            if line.strip() == Clue_texts[0]:
+                                found_clue_H = True
+                                break
+                        if not found_clue_H:
+                            clue_a = open("Clues", "a")
+                            clue_a.write(str(Clue_texts[0]) + "\n")
+                            clue_a.close()
+                        clue_r.close()
 
             #Clue 2
             if entrance_random == 2:
                 if time.get_ticks() - clue_start_time < clue_time:
                     if normal:
                         screen.blit(Clue_list[1], (285, 460))
+                        clue_r = open("Clues", "r")
+                        found_clue_H = False
+                        for line in clue_r:
+                            if line.strip() == Clue_texts[1]:
+                                found_clue_H = True
+                                break
+                        if not found_clue_H:
+                            clue_a = open("Clues", "a")
+                            clue_a.write(str(Clue_texts[1]) + "\n")
+                            clue_a.close()
+                        clue_r.close()
 
         if display_text and not display_text_2:
             if time.get_ticks() - clue_start_time > clue_time:
@@ -413,6 +442,17 @@ def drawScreen():
         if normal:
             if show_clue_L:
                 screen.blit(Clue_list[living_random], (250, 150))
+                clue_r = open("Clues", "r")
+                found_clue_L = False
+                for line in clue_r:
+                    if line.strip() == Clue_texts[living_random]:
+                        found_clue_L = True
+                        break
+                if not found_clue_L:
+                    clue_a = open("Clues", "a")
+                    clue_a.write(Clue_texts[living_random] + "\n")
+                    clue_a.close()
+                clue_r.close()
         content = open("Inventory", "r")
         for line in content:
             if "kitchen_key" in line:
@@ -441,6 +481,17 @@ def drawScreen():
         if normal:
             if show_clue_K:
                 screen.blit(Clue_list[kitchen_random], (95, 130))
+                clue_r = open("Clues", "r")
+                found_clue_K = False
+                for line in clue_r:
+                    if line.strip() == Clue_texts[kitchen_random]:
+                        found_clue_K = True
+                        break
+                if not found_clue_K:
+                    clue_a = open("Clues", "a")
+                    clue_a.write(Clue_texts[kitchen_random] + "\n")
+                    clue_a.close()
+                clue_r.close()
         content = open("Inventory", "r")
         for line in content:
             if "dining_key" in line:
@@ -468,6 +519,17 @@ def drawScreen():
         if normal:
             if show_clue_D:
                 screen.blit(Clue_list[dining_random], (10, 250))
+                clue_r = open("Clues", "r")
+                found_clue_D = False
+                for line in clue_r:
+                    if line.strip() == Clue_texts[dining_random]:
+                        found_clue_D = True
+                        break
+                if not found_clue_D:
+                    clue_a = open("Clues", "a")
+                    clue_a.write(Clue_texts[dining_random] + "\n")
+                    clue_a.close()
+                clue_r.close()
         content = open("Inventory", "r")
         for line in content:
             if "flashlight" in line:
@@ -511,8 +573,6 @@ def drawScreen():
         if player_collision.colliderect(Room1_H):
             screen.blit(my_text, (680, 150))
 
-
-
     #Bathroom
     if backgrounds == bathroom:
         if police:
@@ -530,6 +590,18 @@ def drawScreen():
         if normal:
             if show_clue_B:
                 screen.blit(Clue_list[bathroom_random], (300, 360))
+                clue_r = open("Clues", "r")
+                found_clue_B = False
+                for line in clue_r:
+                    if line.strip() == Clue_texts[bathroom_random]:
+                        found_clue_B = True
+                        break
+                if not found_clue_B:
+                    clue_a = open("Clues", "a")
+                    clue_a.write(Clue_texts[bathroom_random] + "\n")
+                    clue_a.close()
+                clue_r.close()
+
         content = open("Inventory", "r")
         for line in content:
             if "room1_key" in line:
@@ -553,6 +625,11 @@ def drawScreen():
         screen.blit(my_text, (367, 360))
     display.flip()
 
+    #Lose Screen
+    if backgrounds == lose_screen:
+        screen.blit(lose_text, (350, 40))
+        screen.blit(my_text, (367, 360))
+
 #Initializing clock
 myClock = time.Clock()
 
@@ -568,6 +645,13 @@ while running:
         backgrounds = win_screen
     #Score keeping
     elapsed_time = (time.get_ticks() - game_start_time) // 1000
+    if normal:
+        if elapsed_time >= 90:
+            backgrounds = lose_screen
+    if hard:
+        if elapsed_time >= 60:
+            backgrounds = lose_screen
+
     if backgrounds != win_screen:
         keep_score = 5000 - (elapsed_time * 10)
     if keep_score < 0:
@@ -882,6 +966,36 @@ while running:
                     current_inventory = []
                     backgrounds = menu
 
+                elif backgrounds == lose_screen:
+                    open("Inventory", "w").close()
+                    open("Score", "w").close()
+                    buffer = False
+                    win = False
+                    message_time = 0
+                    clue_start_time = 0
+                    entrance_2_start = 0
+                    key_time_H = 0
+                    key_time_L = 0
+                    key_time_K = 0
+                    flash_time = 0
+                    key_time_B = 0
+                    time_till_win = 0
+                    game_start_time = 0
+                    time_reset = 0
+                    player_x = 360
+                    player_y = 400
+                    normal = False
+                    hard = False
+                    police = False
+                    robber = False
+                    inv_key_L = False
+                    inv_key_K = False
+                    inv_key_D = False
+                    inv_flash = False
+                    inv_key_R = False
+                    current_inventory = []
+                    backgrounds = menu
+
 
         #Initializing key up
         if evnt.type == KEYUP:
@@ -1023,7 +1137,6 @@ while running:
         #Bathroom
         elif backgrounds == bathroom and not predicted_collision.colliderect(sink) and not predicted_collision.colliderect(bathtub) and not predicted_collision.colliderect(toilet) and player_x <= 585:
             player_x += player_speed
-
 
     if KEY_UP:
         if police:
